@@ -1,0 +1,8 @@
+.DS_Store
+/__pycache__
+/.ipynb_checkpoints
+/doc_documentation
+/doc_research_papers
+/model_saves
+/data
+/.vscode
