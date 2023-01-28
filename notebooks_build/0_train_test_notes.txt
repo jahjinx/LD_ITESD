@@ -14,7 +14,7 @@ intermediate_XED_binary_01
             Some values are removed in cleaning, but otherwise the entire dataset is used.
     Testing Notes:
         Tested On: data/inter_XED/binary/xed_binary_test.csv
-            This testing data is a subset of the training data as no dedicated testing set exsited.
+            This testing data is a subset of the training data as no dedicated testing set existed.
 
 intermediate_XED_fine_01
     Training Notes:
@@ -23,7 +23,7 @@ intermediate_XED_fine_01
             Some values are removed in cleaning, but otherwise the entire dataset is used.
     Testing Notes:
         Tested On: data/inter_XED/fine_grain/xed_fine-grain_test.csv
-            This testing data is a subset of the training data as no dedicated testing set exsited.
+            This testing data is a subset of the training data as no dedicated testing set existed.
 
 intermediate_SARC_01
     Training Notes:

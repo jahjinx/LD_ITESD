@@ -2,12 +2,14 @@ import torch
 import torch.nn as nn
 from transformers import RobertaTokenizer
 
+dataset_path: str          = None
 # --------- Model Parameters --------- 
 num_labels: float          = 2 # number of output labels for current model
 
 # --------- Training Parameters --------- 
-batch_size: float          = 16 # Recommended batch size: 16, 32. See: https://arxiv.org/pdf/1907.11692.pdf
+batch_size: float          = 16 # Recommended batch size: {16, 32}. See: https://arxiv.org/pdf/1907.11692.pdf
 learning_rate: float       = 1e-05 # Recommended Learning Rates {1e−5, 2e−5, 3e−5}. See: https://arxiv.org/pdf/1907.11692.pdf
+weight_decay: float        = 0.01 # Recommended weight decay: {0.1, 0.01}. See: https://arxiv.org/pdf/1907.11692.pdf
 
 device                     = torch.device('mps' if torch.backends.mps.is_available() else 'cpu')
 # device                   = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -23,4 +25,3 @@ phone_number: str          = "" # w/+Country Code, no spaces, dashes, or parenth
 # --------- Tokenizer Parameters --------- 
 tokenizer                  = RobertaTokenizer.from_pretrained("roberta-base")
 max_length: float          = 256 # length of tokenized phrases allowed, 512 max for RoBERTa
-

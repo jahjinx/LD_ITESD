@@ -6,6 +6,10 @@ import numpy as np
 import params
 from transformers import set_seed
 
+#TODO combine preprocessing and collate functions
+#TODO look up best way to do so. ex: one function that checks data type and returns appropriate collate function?
+#TODO or, do we add everything to the same function and use if statements to check data type?
+
 def seed_worker(worker_id):
     "seeding function for dataloaders"
     worker_seed = torch.initial_seed() % 2**32
@@ -108,6 +112,29 @@ def cosmos_preprocessing(examples, eval=False):
     # Un-flatten
     return {k: [v[i:i+4] for i in range(0, len(v), 4)] for k, v in tokenized_examples.items()}
 
+def encode_text(text_list):
+  """
+  takes a list of string sequences and encode them, outputting two lists:
+  - a list of token ids
+  - a list of attention masks
+  
+  encoded sequences are truncated to params.max_length but not padded
+  
+  string sequences may be passed from dataframe as `df.text.values`
+  """
+  
+  token_ids = []
+  attention_masks = []
+
+  # encode training text
+  for sample in text_list:
+    encoding_dict = preprocessing_dyna(sample, params.tokenizer)
+    # parse encoding dict to lists
+    token_ids.append(encoding_dict['input_ids']) 
+    attention_masks.append(encoding_dict['attention_mask'])
+    
+  return token_ids, attention_masks
+
 def seq_class_collate(features):
   """
   Data collator that will dynamically pad the inputs for sequence classification data via dataloader fn.
@@ -177,3 +204,17 @@ def mc_collate(features):
     # Add back labels
     batch.append(torch.tensor(labels, dtype=torch.int64))
     return batch
+
+def output_parameters():
+    print(f"""
+      Training Dataset: {params.dataset_path}
+      Number of Labels: {params.num_labels}
+      Batch Size: {params.batch_size}
+      Learning Rate: {params.learning_rate}
+      Weight Decay: {params.weight_decay}
+      Epochs: {params.epochs}
+      Output Directory: {params.output_dir}
+      Save Frequency: {params.save_freq}
+      Checkpoint Frequency: {params.checkpoint_freq}
+      Max Length: {params.max_length}
+      """)
