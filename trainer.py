@@ -171,6 +171,9 @@ class Trainer:
                 self.save_model(epoch, self.model, val_acc, val_f1)
                 self.save_checkpoint(epoch, self.model, val_loss,  val_acc, val_f1)
 
+                # just to make the log prettier
+                logging.info('')
+                
                 # ==================== Notify ====================
                 if self.phone_number != None:
                     message = f"{self.output_Dir} epoch {epoch}:\nAccuracy: {round(val_acc, 2)} \nF1: {round(val_f1, 2)}"
