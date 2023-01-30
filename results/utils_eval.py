@@ -89,7 +89,7 @@ def evaluate_model(test_dataframe, model_list, results_csv_path):
         print(f"\t- Accuracy: {acc}")
         print(f"\t- F1: {f1}\n")
 
-def evaluate_mc_model(test_data, model_list, results_csv_path):
+def evaluate_mc_model(test_data, model_list, num_labels, results_csv_path):
     """
     1. Takes Test Data
         - test dataframe must include ['text'] and ['label'] fields
@@ -142,9 +142,14 @@ def evaluate_mc_model(test_data, model_list, results_csv_path):
                 predicted_class = logits.argmax().item()
                 predictions.append(int(predicted_class))
 
+                        # check num labels for validation metrics
+        if num_labels > 2:
+            metric_average = "micro"
+        else:
+            metric_average = "binary"
+            
+        f1 = f1_score(true_labels, predictions, average=metric_average)
         acc = accuracy_score(true_labels, predictions)
-        # f1 = f1_score(test_dataframe['label'], predictions, average='micro') #TODO build in automation for this line
-        f1 = f1_score(true_labels, predictions, average='micro')
 
         results_to_save = {'model_name': [model_name], 'model_epoch': [model_epoch], 'test_accuracy': [acc], 'test_f1': [f1], 'predictions': [predictions]}
         results_to_save_df = pd.DataFrame(data=results_to_save)
