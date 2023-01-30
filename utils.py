@@ -1,9 +1,10 @@
-import torch
-import random
-import platform
-
-import numpy as np
 import params
+
+import random
+import numpy as np
+
+import torch
+import platform
 from transformers import set_seed
 
 
@@ -62,57 +63,50 @@ def encode_text(text_list):
     
     return token_ids, attention_masks 
 
-# the following function is for preprocessing multiple-choice data
-def hella_preprocessing(examples, eval=False):
-    # designate ending names
-    ending_names = ["ending0", "ending1", "ending2", "ending3"]
+def mc_preprocessing(examples, eval=False):
 
-    # Repeat each first sentence four times to go with the four possibilities of second sentences.
-    first_sentences = [[context] * 4 for context in examples["ctx_a"]]
+    # hellaswag uses ending0, ending1, ending2, ending3
+    if 'ending0' in examples.keys():
+        # designate ending names
+        ending_names = ["ending0", "ending1", "ending2", "ending3"]
 
-    # Grab all second sentences possible for each context.
-    question_headers = examples["ctx_b"]
-    second_sentences = [[f"{header} {examples[end][i]}" for end in ending_names] for i, header in enumerate(question_headers)]
+        # Repeat each first sentence four times to go with the four possibilities of second sentences.
+        full_context = [[context] * 4 for context in examples["ctx_a"]]
 
-    # Flatten everything
-    first_sentences = sum(first_sentences, [])
-    second_sentences = sum(second_sentences, [])
+        # Grab all second sentences possible for each context.
+        question_headers = examples["ctx_b"]
+        # merge question headers with options
+        options = [[f"{header} {examples[end][i]}" for end in ending_names] for i, header in enumerate(question_headers)]
+
+    # cosmosqa uses answer0, answer1, answer2, answer3
+    elif 'answer0' in examples.keys():
+        # designate answer names
+        ending_names = ["answer0", "answer1", "answer2", "answer3"]
     
+        contexts = examples["context"]
+        questions = examples["question"]
+    
+        # Combine the contexts and answers with the separator tokens </s></s> 
+        # We use this method as the tokenizer will not combine three sentences into one input.
+        # Also, repeat each sentence four times to go with the four possibilities of answers.
+        full_context = [[contexts[i] + "</s></s>" + questions[i]]*4 for i in range(len(contexts))]
+        options = [[examples[end][i] for end in ending_names] for i in range(len(contexts))]
+    
+    else:
+        print("ERROR: ending names not found")
+    
+    # Flatten everything
+    full_context = sum(full_context, [])
+    options = sum(options, [])
+        
     # Tokenize
     if eval == True:
-        tokenized_examples = params.tokenizer(first_sentences, second_sentences, padding=True, truncation=True, max_length=512)
+        tokenized_examples = params.tokenizer(full_context, options, padding=True, truncation=True, max_length=512)
     else:   
-        tokenized_examples = params.tokenizer(first_sentences, second_sentences, truncation=True)
+        tokenized_examples = params.tokenizer(full_context, options, truncation=True)
         
     # Un-flatten
-    return {k: [v[i:i+4] for i in range(0, len(v), 4)] for k, v in tokenized_examples.items()}
-
-# the following function is for preprocessing multiple-choice data
-def cosmos_preprocessing(examples, eval=False):
-    # designate answer names
-    ending_names = ["answer0", "answer1", "answer2", "answer3"]
-    
-    contexts = examples["context"]
-    questions = examples["question"]
-    
-    # Combine the contexts and answers with the separator tokens </s></s> 
-    # We use this method as the tokenizer will not combine three sentences into one input.
-    # Also, repeat each sentence four times to go with the four possibilities of answers.
-    cont_quest = [[contexts[i] + "</s></s>" + questions[i]]*4 for i in range(len(contexts))]
-    answers = [[examples[end][i] for end in ending_names] for i in range(len(contexts))]
-
-    # Flatten everything
-    cont_quest = sum(cont_quest, [])
-    answers = sum(answers, [])
-    
-    # Tokenize
-    if eval == True:
-        tokenized_examples = params.tokenizer(cont_quest, answers, padding=True, truncation=True, max_length=512)
-    else:   
-        tokenized_examples = params.tokenizer(cont_quest, answers, truncation=True)
-        
-    # Un-flatten
-    return {k: [v[i:i+4] for i in range(0, len(v), 4)] for k, v in tokenized_examples.items()}
+    return {k: [v[i:i+4] for i in range(0, len(v), 4)] for k, v in tokenized_examples.items()}    
 
 def collate(features):
     """
@@ -195,7 +189,7 @@ def output_parameters():
           Checkpoint Frequency: {params.checkpoint_freq}
           Max Length: {params.max_length}
           """)
-    
+
 # ---------------------------- RETIRED, HOLD FOR NOW ----------------------------
 # def preprocessing(input_text, tokenizer):
 #   '''
@@ -279,3 +273,55 @@ def output_parameters():
 #     # Add back labels
 #     batch.append(torch.tensor(labels, dtype=torch.int64))
 #     return batch
+
+# # the following function is for preprocessing multiple-choice data
+# def hella_preprocessing(examples, eval=False):
+#     # designate ending names
+#     ending_names = ["ending0", "ending1", "ending2", "ending3"]
+
+#     # Repeat each first sentence four times to go with the four possibilities of second sentences.
+#     first_sentences = [[context] * 4 for context in examples["ctx_a"]]
+
+#     # Grab all second sentences possible for each context.
+#     question_headers = examples["ctx_b"]
+#     second_sentences = [[f"{header} {examples[end][i]}" for end in ending_names] for i, header in enumerate(question_headers)]
+
+#     # Flatten everything
+#     first_sentences = sum(first_sentences, [])
+#     second_sentences = sum(second_sentences, [])
+    
+#     # Tokenize
+#     if eval == True:
+#         tokenized_examples = params.tokenizer(first_sentences, second_sentences, padding=True, truncation=True, max_length=512)
+#     else:   
+#         tokenized_examples = params.tokenizer(first_sentences, second_sentences, truncation=True)
+        
+#     # Un-flatten
+#     return {k: [v[i:i+4] for i in range(0, len(v), 4)] for k, v in tokenized_examples.items()}
+
+# # the following function is for preprocessing multiple-choice data
+# def cosmos_preprocessing(examples, eval=False):
+#     # designate answer names
+#     ending_names = ["answer0", "answer1", "answer2", "answer3"]
+    
+#     contexts = examples["context"]
+#     questions = examples["question"]
+    
+#     # Combine the contexts and answers with the separator tokens </s></s> 
+#     # We use this method as the tokenizer will not combine three sentences into one input.
+#     # Also, repeat each sentence four times to go with the four possibilities of answers.
+#     cont_quest = [[contexts[i] + "</s></s>" + questions[i]]*4 for i in range(len(contexts))]
+#     answers = [[examples[end][i] for end in ending_names] for i in range(len(contexts))]
+
+#     # Flatten everything
+#     cont_quest = sum(cont_quest, [])
+#     answers = sum(answers, [])
+    
+#     # Tokenize
+#     if eval == True:
+#         tokenized_examples = params.tokenizer(cont_quest, answers, padding=True, truncation=True, max_length=512)
+#     else:   
+#         tokenized_examples = params.tokenizer(cont_quest, answers, truncation=True)
+        
+#     # Un-flatten
+#     return {k: [v[i:i+4] for i in range(0, len(v), 4)] for k, v in tokenized_examples.items()}

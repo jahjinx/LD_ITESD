@@ -13,6 +13,8 @@ weight_decay: float        = 0 # RoBERTa Paper does not mention hyperparameter s
 
 device                     = torch.device('mps' if torch.backends.mps.is_available() else 'cpu')
 # device                   = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# device                   = 'cpu'
+
 epochs: float              = 10 # Recommended number of epochs: 10. See: https://arxiv.org/pdf/1907.11692.pdf
 val_loss_fn                = nn.CrossEntropyLoss() # loss function for validation loop
 

@@ -33,7 +33,7 @@ def parse_model_dir(top_level_dir):
 
 
 
-def evaluate_model(test_dataframe, model_list, results_csv_path):
+def evaluate_model(test_dataframe, model_list, num_labels, results_csv_path):
     """
     1. Takes Test Data
         - test dataframe must include ['text'] and ['label'] fields
@@ -43,7 +43,10 @@ def evaluate_model(test_dataframe, model_list, results_csv_path):
         - results_csv_path must have format:
         - {'model_name': [], 'model_epoch': [], 'test_accuracy': [], 'test_f1': [], 'predictions':[]}
     """
-
+    
+    # put on device to increase inference speed
+    device = params.device
+    
     # start testing loop
     for path in model_list:
         PATH = path
@@ -58,11 +61,16 @@ def evaluate_model(test_dataframe, model_list, results_csv_path):
         # tokenizer = AutoTokenizer.from_pretrained(PATH, local_files_only=True, model_max_length=512)
         tokenizer_kwargs = {'padding':True,'truncation':True,'max_length':512}
 
-        pipe = TextClassificationPipeline(model=model, tokenizer=tokenizer, top_k=2)
+        pipe = TextClassificationPipeline(model=model, 
+                                          tokenizer=tokenizer, 
+                                          top_k=2, 
+                                          device=device)
 
         test_input = test_dataframe['text'].tolist()
         test_output = []
 
+        model.to(device)
+        
         # run tests and append to output
         with tqdm(test_input, unit="test") as prog:
             for step, test in enumerate(prog):
@@ -76,11 +84,16 @@ def evaluate_model(test_dataframe, model_list, results_csv_path):
             # Remove LABEL_ and cast as int
             prediction = i[0]['label'].replace("LABEL_","")
             predictions.append(int(prediction))
-
+        
+        # check num labels for validation metrics
+        if num_labels > 2:
+            metric_average = "micro"
+        else:
+            metric_average = "binary"
+            
+        f1 = f1_score(test_dataframe['label'], predictions, average=metric_average)
         acc = accuracy_score(test_dataframe['label'], predictions)
-        # f1 = f1_score(test_dataframe['label'], predictions, average='micro') #TODO build in automation for this line
-        f1 = f1_score(test_dataframe['label'], predictions, average='binary')
-
+        
         results_to_save = {'model_name': [model_name], 'model_epoch': [model_epoch], 'test_accuracy': [acc], 'test_f1': [f1], 'predictions': [predictions]}
         results_to_save_df = pd.DataFrame(data=results_to_save)
         results_to_save_df.to_csv(results_csv_path, mode='a', header=False, index=False)
@@ -100,8 +113,9 @@ def evaluate_mc_model(test_data, model_list, num_labels, results_csv_path):
         - {'model_name': [], 'model_epoch': [], 'test_accuracy': [], 'test_f1': [], 'predictions':[]}
     """
 
-    # put on device given exceptional input size
+    # put on device to increase inference speed
     device = params.device
+    
     # start testing loop
     for path in model_list:
         PATH = path
@@ -142,7 +156,7 @@ def evaluate_mc_model(test_data, model_list, num_labels, results_csv_path):
                 predicted_class = logits.argmax().item()
                 predictions.append(int(predicted_class))
 
-                        # check num labels for validation metrics
+        # check num labels for validation metrics
         if num_labels > 2:
             metric_average = "micro"
         else:
