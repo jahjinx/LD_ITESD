@@ -1,0 +1,45 @@
+This document notes on the selection of intermediate models for target-task training.
+
+We select the best epoch from each model (according to F1 score on their respective
+test sets) to train on the target task.
+
+Key:
+    ✅ - Training Complete
+    🏆 - best score of all epochs
+    4️⃣ - 4th best score of all epochs
+
+✅ XED - Binary
+    Top Model: model_saves/intermediate_XED_binary_01/E01_A0.81_F0.82
+    Intermediate Test Set: data/inter_XED/itesd_xed_binary_balanced.hf
+    🏆 F1 Score on Intermediate Test Set: 0.834565
+    4️⃣ Accuracy Score on Intermediate Test Set: 0.824169
+
+✅ XED - Fine
+    Top Model: model_saves/intermediate_XED_fine_01/E04_A0.53_F0.53
+    Intermediate Test Set: data/inter_XED/itesd_xed_fine_balanced.hf
+    🏆 F1 Score on Intermediate Test Set: 0.536556 
+    🏆 Accuracy Score on Intermediate Test Set: 0.536556
+
+✅ SARC
+    Top Model: "model_saves/intermediate_SARC_01/E03_A0.76_F0.74"
+    Intermediate Test Set: data/inter_SARC/itesd_sarc_balanced.hf
+    🏆 F1 Score on Intermediate Test Set: 0.761071 
+    🏆 Accuracy Score on Intermediate Test Set: 0.762600 
+
+✅ IMDB
+    Top Model: model_saves/intermediate_IMDB_01/E02_A0.94_F0.94
+    Intermediate Test Set: data/inter_IMDB_sentiment/itesd_imdb_balanced.hf
+    🏆 F1 Score on Intermediate Test Set: 0.959053
+    🏆 Accuracy Score on Intermediate Test Set: 0.959200
+
+HellaSwag
+    Top Model:
+    Intermediate Test Set:
+    F1 Score on Intermediate Test Set:
+    Accuracy Score on Intermediate Test Set:
+
+CosmosQA
+    Top Model:
+    Intermediate Test Set:
+    F1 Score on Intermediate Test Set:
+    Accuracy Score on Intermediate Test Set:
