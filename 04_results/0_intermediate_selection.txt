@@ -5,6 +5,7 @@ test sets) to train on the target task.
 
 Key:
     ✅ - Training Complete
+    🔬 - Micro F1, Accuracy and F1 will be the same
     🏆 - best score of all epochs
     4️⃣ - 4th best score of all epochs
 
@@ -23,8 +24,8 @@ Key:
 ✅ SARC
     Top Model: "model_saves/intermediate_SARC_01/E03_A0.76_F0.74"
     Intermediate Test Set: data/inter_SARC/itesd_sarc_balanced.hf
-    🏆 F1 Score on Intermediate Test Set: 0.761071 
-    🏆 Accuracy Score on Intermediate Test Set: 0.762600 
+    🏆🔬 F1 Score on Intermediate Test Set: 0.761071 
+    🏆🔬 Accuracy Score on Intermediate Test Set: 0.762600 
 
 ✅ IMDB
     Top Model: model_saves/intermediate_IMDB_01/E02_A0.94_F0.94
@@ -32,11 +33,11 @@ Key:
     🏆 F1 Score on Intermediate Test Set: 0.959053
     🏆 Accuracy Score on Intermediate Test Set: 0.959200
 
-HellaSwag
-    Top Model:
-    Intermediate Test Set:
-    F1 Score on Intermediate Test Set:
-    Accuracy Score on Intermediate Test Set:
+✅ HellaSwag
+    Top Model: model_saves/intermediate_HellaSwag_01/E07_A0.62_F0.62
+    Intermediate Test Set: data/inter_HellaSwag/itesd_hellaswag_balanced.hf
+    🏆🔬 F1 Score on Intermediate Test Set: 0.631958
+    🏆🔬 Accuracy Score on Intermediate Test Set: 0.631958
 
 CosmosQA
     Top Model:

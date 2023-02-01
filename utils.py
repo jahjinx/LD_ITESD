@@ -40,7 +40,19 @@ def preprocessing_dyna(input_text, tokenizer):
                                  truncation=True,
                                  return_attention_mask = True,
                                  )
-  
+def construct_input(encoded_dataset_split):
+    """
+    takes a DatasetDict split that includes "input_ids", "attention_mask", 
+    "label" features and constructs a list of dictionaries for the DataLoaders.
+    """
+
+    accepted_keys = ["input_ids", "attention_mask", "label"]
+    num_samples = len(encoded_dataset_split)
+    
+    features = [{k: v for k, v in encoded_dataset_split[i].items() if k in accepted_keys} for i in range(num_samples)]
+    
+    return features
+ 
 def encode_text(text_list):
     """
     takes a list of string sequences and encode them, outputting two lists:

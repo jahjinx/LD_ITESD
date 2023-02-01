@@ -128,15 +128,17 @@ def evaluate_mc_model(test_data, model_list, num_labels, results_csv_path):
         model = RobertaForMultipleChoice.from_pretrained(PATH, local_files_only=True)
         params.tokenizer = RobertaTokenizer.from_pretrained(PATH, local_files_only=True)
 
-        if "hella" in model_name:
-            print("HellaSwag Found")
-            encoded_dataset = test_data['test'].map(hella_preprocessing, batched=True, fn_kwargs={"eval": True})
-        elif "cosmos" in model_name:
-            print("CosmosQA Found")
-            encoded_dataset = test_data['test'].map(cosmos_preprocessing, batched=True, fn_kwargs={"eval": True})
-        else:
-            print('ERROR: No preprocessing function found for model')
-            
+        # if "hella" in model_name:
+        #     print("HellaSwag Found")
+        #     encoded_dataset = test_data['test'].map(mc_preprocessing, batched=True, fn_kwargs={"eval": True})
+        # elif "cosmos" in model_name:
+        #     print("CosmosQA Found")
+        #     encoded_dataset = test_data['test'].map(cosmos_preprocessing, batched=True, fn_kwargs={"eval": True})
+        # else:
+        #     print('ERROR: No preprocessing function found for model')
+        
+        encoded_dataset = test_data['test'].map(mc_preprocessing, batched=True, fn_kwargs={"eval": True})
+     
         test_number_samples = len(encoded_dataset)
         accepted_keys = ["input_ids", "attention_mask", "label"]
         test_features = [{k: v for k, v in encoded_dataset[i].items() if k in accepted_keys} for i in range(test_number_samples)]
