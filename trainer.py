@@ -1,17 +1,40 @@
 import os
-import torch
-import logging
 import numpy as np
+
 from utils import *
+
+import torch
+import torch.nn as nn
+from torchinfo import summary
+from torch.utils.data import DataLoader, RandomSampler
+
+import logging
 from tqdm import tqdm
+from datasets import load_from_disk
+
+from transformers import RobertaTokenizer
+from transformers import RobertaTokenizer, RobertaForSequenceClassification, RobertaForMultipleChoice
+
 from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
 
 # suppress MPS CPU fallback warning
 import warnings
 warnings.filterwarnings(action='ignore', category=UserWarning)
 
+# suppress model warning
+from transformers import logging
+logging.set_verbosity_error()
+
+# set logging level
+import logging
+logging.basicConfig(format='%(message)s', level=logging.INFO)
+
 # set general seeds
 set_seeds(1)
+
+# set dataloader generator seed
+g = torch.Generator()
+g.manual_seed(1)
 
 class Trainer:
     """
@@ -74,37 +97,59 @@ class Trainer:
         Defaults to `None`.
 
     """
-    def __init__(self, 
-                 model, 
+    def __init__(self,
+                 dataset_path, 
+                 data_type,
                  device, 
-                 tokenizer, 
-                 train_dataloader, 
-                 validation_dataloader,
-                 epochs, 
-                 optimizer, 
-                 val_loss_fn, 
                  num_labels=2,
+                 epochs=10,
+                 val_loss_fn=nn.CrossEntropyLoss(), 
+                 tokenizer=RobertaTokenizer.from_pretrained("roberta-base"), 
                  output_dir=None, 
                  save_freq=None,
                  checkpoint_freq=None, 
                  checkpoint_load=None,
                  phone_number=None,):
 
-        self.model = model 
-        self.device = device 
-        self.tokenizer = tokenizer
-        self.train_dataloader = train_dataloader
-        self.validation_dataloader = validation_dataloader
-        self.epochs = epochs 
-        self.optimizer = optimizer 
-        self.val_loss_fn = val_loss_fn 
+        self.datasets = load_from_disk(dataset_path)
+        self.data_type = data_type
+        self.device = torch.device(device)
         self.num_labels = num_labels
+        self.epochs = epochs 
+        self.val_loss_fn = val_loss_fn 
+        self.tokenizer = tokenizer
+        self.model = self.configure_model() 
+        self.optimizer = self.configure_optimizer()
         self.output_dir = output_dir
         self.save_freq = save_freq 
         self.checkpoint_freq = checkpoint_freq
-        self.checkpoint_load=checkpoint_load
+        self.checkpoint_load = checkpoint_load
         self.phone_number = phone_number
+        
+    def configure_optimizer(self):
+        optimizer = torch.optim.Adam(params=self.model.parameters(), 
+                                    lr=params.learning_rate,
+                                    weight_decay=params.weight_decay)
+        return optimizer
 
+    def configure_model(self):
+        if self.data_type == "multiple_choice":
+            model = RobertaForMultipleChoice.from_pretrained('roberta-base',
+                                                             num_labels = self.num_labels,
+                                                             output_attentions = False,
+                                                             output_hidden_states = False,
+                                                             )
+        elif self.data_type == "sequence_classification":
+            # Load the RobertaForSequenceClassification model
+            model = RobertaForSequenceClassification.from_pretrained('roberta-base',
+                                                                     num_labels = self.num_labels,
+                                                                     output_attentions = False,
+                                                                     output_hidden_states = False,
+                                                                     )        
+        model.to(self.device)
+
+        return model
+    
     def fit(self):
         # check for existing checkpoint
         current_epoch, val_loss = self.load_checkpoint()
@@ -119,13 +164,14 @@ class Trainer:
             nb_tr_examples, nb_tr_steps = 0, 0
             
             # tqdm for progress bars
-            with tqdm(self.train_dataloader, unit="batch") as tepoch:
+            with tqdm(self.train_dataloader(), unit="batch") as tepoch:
                 for step, batch in enumerate(tepoch):
                     tepoch.set_description(f"Epoch {epoch}")
 
                     batch = tuple(t.to(self.device) for t in batch)
                     b_input_ids, b_input_mask, b_labels = batch
                     self.optimizer.zero_grad()
+                    
                     # Forward pass
                     train_output = self.model(b_input_ids, 
                                         token_type_ids = None, 
@@ -136,7 +182,7 @@ class Trainer:
 
                     # Backward pass
                     train_output.loss.backward()
-                    # training_loss.backward() # custom  loss
+                    # training_loss.backward() # custom loss
 
                     self.optimizer.step()
                     # Update tracking variables
@@ -154,7 +200,7 @@ class Trainer:
                     metric_average = "binary"
 
                 val_loss, val_acc, val_f1, val_recall, val_precision = self.validate(self.model, 
-                                                                                     self.validation_dataloader, 
+                                                                                     self.validation_dataloader(), 
                                                                                      self.device, 
                                                                                      self.val_loss_fn,
                                                                                      metric_average)
@@ -188,7 +234,6 @@ class Trainer:
         batch_recalls = []
         batch_precisions = []
 
-
         with tqdm(val_dl, unit="batch") as prog:
             for step, batch in enumerate(prog):
                 prog.set_description(f"\t Validation {step}")
@@ -215,12 +260,7 @@ class Trainer:
                 # accuracy
                 batch_accuracy = accuracy_score(true_labels, preds)
                 batch_accuracies.append(batch_accuracy)
-
-                #TODO set zero_division to "np.nan" when available
-                # see https://github.com/scikit-learn/scikit-learn/pull/23183
-                # currently, if the denominator of these equations is 0 (meaning no info can be seen), we set the value to 0
-                # this is somewhat misleading though, as it lowers scores.
-              
+                
                 # f1
                 batch_f1 = f1_score(true_labels, preds, zero_division=0, average=metric_average)
                 batch_f1s.append(batch_f1)
@@ -240,7 +280,34 @@ class Trainer:
         validation_precision = sum(batch_precisions)/len(batch_precisions)
 
         return val_loss, validation_accuracy, validation_f1, validation_recall, validation_precision
+            
+    def train_dataloader(self) -> DataLoader:
+        return self.get_dataloader(split="train")
 
+    def validation_dataloader(self) -> DataLoader:
+        return self.get_dataloader(split="validation")
+
+    def get_dataloader(self, split) -> DataLoader:
+        
+        if self.data_type == "multiple_choice":
+            encoded_datasets = self.datasets.map(mc_preprocessing, batched=True)
+            
+        elif self.data_type == "sequence_classification":
+            encoded_datasets = self.datasets.map(preprocessing_dyna, batched=True)
+        
+        features = construct_input(encoded_datasets[split])
+        
+        dataloader = DataLoader(
+                features,
+                sampler = RandomSampler(features),
+                batch_size = params.batch_size,
+                worker_init_fn=seed_worker,
+                generator=g,
+                collate_fn=collate
+                )
+        
+        return dataloader
+    
     def save_model(self, epoch, model, val_acc=0, val_f1=0):
         if self.save_freq != None and ((epoch)%self.save_freq == 0):
             
@@ -259,8 +326,10 @@ class Trainer:
                 pass
         
         else:
-            logging.info(f"\t ! Save Directory: {self.output_dir}, Save Frequency: {self.save_freq}, Epoch: {epoch}")
-
+            logging.info(f"\t ! Save Directory: {self.output_dir}, \
+                                Save Frequency: {self.save_freq}, \
+                                Epoch: {epoch}")
+            
     def save_checkpoint(self, epoch, model, loss,  val_acc=0, val_f1=0):
 
         if self.checkpoint_freq != None and ((epoch)%self.checkpoint_freq == 0):
@@ -282,7 +351,9 @@ class Trainer:
                 pass
         
         else:
-            logging.info(f"\t ! Checkpoint Directory: {self.output_dir}, Save Frequency: {self.checkpoint_freq}, Epoch {epoch}")
+            logging.info(f"\t ! Checkpoint Directory: {self.output_dir}, \
+                                Save Frequency: {self.checkpoint_freq}, \
+                                Epoch {epoch}")
 
     def load_checkpoint(self):
         # load checkpoint if existing
@@ -290,7 +361,7 @@ class Trainer:
             checkpoint = torch.load(self.checkpoint_load)
             self.model.load_state_dict(checkpoint['model_state_dict'])
             self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-            current_epoch = checkpoint['epoch']+1 # checkpoint logs saved epoch, increment
+            current_epoch = checkpoint['epoch']+1 # increment from last epoch
             val_loss = checkpoint['loss']
 
         else:
