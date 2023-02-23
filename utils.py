@@ -7,6 +7,9 @@ import torch
 import platform
 from transformers import set_seed
 
+# set logging level
+import logging
+logging.basicConfig(format='%(message)s', level=logging.INFO)
 
 def platform_check():
     if "arm" in platform.platform():
@@ -27,7 +30,7 @@ def set_seeds(seed):
     np.random.seed(seed)
     set_seed(seed)
 
-def preprocessing_dyna(input_text, tokenizer=params.tokenizer):
+def preprocessing_dyna(input_text, tokenizer):
     """
     Returns <class transformers.tokenization_utils_base.BatchEncoding> with the following fields:
         - input_ids: list of token ids
@@ -41,21 +44,7 @@ def preprocessing_dyna(input_text, tokenizer=params.tokenizer):
                      return_attention_mask = True,
                      )
     
-def construct_input(encoded_dataset_split):
-    """
-    takes a DatasetDict split that includes "input_ids", "attention_mask", 
-    "label" features and constructs a list of dictionaries for the DataLoaders.
-    """
-
-    accepted_keys = ["input_ids", "attention_mask", "label"]
-    num_samples = len(encoded_dataset_split)
-    
-    features = [{k: v for k, v in encoded_dataset_split[i].items() if k in accepted_keys} for i in range(num_samples)]
-    
-    return features
-
-def mc_preprocessing(examples, eval=False):
-
+def mc_preprocessing(examples, tokenizer, eval=False):
     # hellaswag uses ending0, ending1, ending2, ending3
     if 'ending0' in examples.keys():
         # designate ending names
@@ -91,15 +80,28 @@ def mc_preprocessing(examples, eval=False):
     options = sum(options, [])
         
     # Tokenize
-    if eval == True:
-        tokenized_examples = params.tokenizer(full_context, options, padding=True, truncation=True, max_length=512)
+    if eval == True: #TODO why if statement here? Needed in preprocessing_dyna?
+        tokenized_examples = tokenizer(full_context, options, padding=True, truncation=True, max_length=512)
     else:   
-        tokenized_examples = params.tokenizer(full_context, options, truncation=True)
+        tokenized_examples = tokenizer(full_context, options, truncation=True)
         
     # Un-flatten
-    return {k: [v[i:i+4] for i in range(0, len(v), 4)] for k, v in tokenized_examples.items()}    
+    return {k: [v[i:i+4] for i in range(0, len(v), 4)] for k, v in tokenized_examples.items()}       
 
-def collate(features):
+def construct_input(encoded_dataset_split):
+    """
+    takes a DatasetDict split that includes "input_ids", "attention_mask", 
+    "label" features and constructs a list of dictionaries for the DataLoaders.
+    """
+    logging.info('Constructing Input...')
+    accepted_keys = ["input_ids", "attention_mask", "label"]
+    num_samples = len(encoded_dataset_split)
+    
+    features = [{k: v for k, v in encoded_dataset_split[i].items() if k in accepted_keys} for i in range(num_samples)]
+    
+    return features 
+
+def collate(features, tokenizer):
     """
     Data collator that will dynamically pad the inputs via dataloader fn.
     """
@@ -117,14 +119,14 @@ def collate(features):
         flattened_features = [[{k: v[i] for k, v in feature.items()} for i in range(num_choices)] for feature in labeless_feat]
         flattened_features = sum(flattened_features, [])
     
-        batch = tokenize_batch(flattened_features)
+        batch = pad_batch(flattened_features, tokenizer)
         
         # Un-flatten
         batch = [v.view(batch_size, num_choices, -1) for k, v in batch.items()]
     
     # sequence classification: input_ids is a list of ints
     elif type(features[0]['input_ids'][0]) == int:
-        batch = tokenize_batch(labeless_feat)   
+        batch = pad_batch(labeless_feat, tokenizer)   
         
         # Un-flatten
         batch = [v for k, v in batch.items()]
@@ -154,29 +156,29 @@ def extract_inputs(label_name, features):
         
     return labeless_feat
 
-def tokenize_batch(adjusted_features):
+def pad_batch(adjusted_features, tokenizer):
     """
     Takes input_ids and attention masks which may or may not have been flattened
     according to use and returns a batch of padded input_ids and attention masks
     This function is primarily used in conjunction with the collate function.
     """
-    batch = params.tokenizer.pad(adjusted_features,
+    batch = tokenizer.pad(adjusted_features,
                                  padding=True,
                                  max_length=None,
                                  return_tensors="pt",
                                  )
     return batch
 
-def output_parameters():
-    print(f"""
-          Training Dataset: {params.dataset_path}
-          Number of Labels: {params.num_labels}
-          Batch Size: {params.batch_size}
-          Learning Rate: {params.learning_rate}
-          Weight Decay: {params.weight_decay}
-          Epochs: {params.epochs}
-          Output Directory: {params.output_dir}
-          Save Frequency: {params.save_freq}
-          Checkpoint Frequency: {params.checkpoint_freq}
-          Max Length: {params.max_length}
-          """)
+# def output_parameters():
+#     print(f"""
+#           Training Dataset: {params.dataset_path}
+#           Number of Labels: {params.num_labels}
+#           Batch Size: {params.batch_size}
+#           Learning Rate: {params.learning_rate}
+#           Weight Decay: {params.weight_decay}
+#           Epochs: {params.epochs}
+#           Output Directory: {params.output_dir}
+#           Save Frequency: {params.save_freq}
+#           Checkpoint Frequency: {params.checkpoint_freq}
+#           Max Length: {params.max_length}
+#           """)

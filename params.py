@@ -16,5 +16,5 @@ weight_decay: float        = 0 # RoBERTa Paper does not mention hyperparameter s
 # phone_number: str          = "" # w/+Country Code, no spaces, dashes, or parentheses
 
 # # --------- Tokenizer Parameters --------- 
-tokenizer                  = RobertaTokenizer.from_pretrained("roberta-base")  # used in utils, fix
+# tokenizer                  = RobertaTokenizer.from_pretrained("roberta-base")  # used in utils, fix
 max_length: float          = 256 # length of tokenized phrases allowed, 512 max for RoBERTa

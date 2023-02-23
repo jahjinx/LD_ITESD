@@ -29,6 +29,9 @@ logging.set_verbosity_error()
 import logging
 logging.basicConfig(format='%(message)s', level=logging.INFO)
 
+from datasets import disable_caching
+disable_caching()
+
 # set general seeds
 set_seeds(1)
 
@@ -134,6 +137,7 @@ class Trainer:
 
     def configure_model(self):
         if self.data_type == "multiple_choice":
+            logging.info('Loading RobertaForMultipleChoice model...')
             model = RobertaForMultipleChoice.from_pretrained('roberta-base',
                                                              num_labels = self.num_labels,
                                                              output_attentions = False,
@@ -141,6 +145,7 @@ class Trainer:
                                                              )
         elif self.data_type == "sequence_classification":
             # Load the RobertaForSequenceClassification model
+            logging.info('Loading RobertaForSequenceClassification model...')
             model = RobertaForSequenceClassification.from_pretrained('roberta-base',
                                                                      num_labels = self.num_labels,
                                                                      output_attentions = False,
@@ -288,13 +293,21 @@ class Trainer:
         return self.get_dataloader(split="validation")
 
     def get_dataloader(self, split) -> DataLoader:
-        
+
         if self.data_type == "multiple_choice":
-            encoded_datasets = self.datasets.map(mc_preprocessing, batched=True)
+            logging.info('Preprocessing for multiple_choice...')
+            encoded_datasets = self.datasets.map(mc_preprocessing, 
+                                                 batched=True, 
+                                                 fn_kwargs={"tokenizer": self.tokenizer,
+                                                            'eval': False}) #TODO Paramaterieze eval
             
         elif self.data_type == "sequence_classification":
-            encoded_datasets = self.datasets.map(preprocessing_dyna, batched=True)
-        
+            logging.info('Preprocessing for sequence_classification...')
+            encoded_datasets = self.datasets.map(preprocessing_dyna, 
+                                                 batched=True, 
+                                                 fn_kwargs={"tokenizer": self.tokenizer}) 
+
+        logging.info(f'Prepping Dataloader for {self.data_type}...')
         features = construct_input(encoded_datasets[split])
         
         dataloader = DataLoader(
@@ -303,7 +316,8 @@ class Trainer:
                 batch_size = params.batch_size,
                 worker_init_fn=seed_worker,
                 generator=g,
-                collate_fn=collate
+                # lambda to pass tokenizer to collate_fn via dataloader
+                collate_fn=lambda batch: collate(batch, tokenizer=self.tokenizer)
                 )
         
         return dataloader
