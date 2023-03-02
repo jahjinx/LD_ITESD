@@ -1,0 +1,75 @@
+This file gives examples of how to run the trainer.py script from the command 
+line in order to train control, target, and intermediate models for this research.
+
+🤖 -> 🎯 Fine-Tune Control Models
+python3 trainer.py \
+--dataset_path "data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf" \
+--model_path "roberta-base" \
+--data_type "sequence_classification" \
+--device "mps" \
+--num_labels 2 \
+--output_dir "model_saves/control_iSarcasm_01"
+
+🤖 -> 🥈 Fine-Tune Intermediate Model
+python3 trainer.py \
+--dataset_path "data/inter_cosmosqa/itesd_cosmosqa_balanced.hf" \
+--model_path "roberta-base" \
+--data_type "multiple_choice" \
+--device "mps" \
+--num_labels 4 \
+--output_dir "model_saves/intermediate_CosmosQA_01"
+
+python3 trainer.py \
+--dataset_path "data/inter_XED/itesd_xed_binary_balanced.hf" \
+--model_path "roberta-base" \
+--data_type "sequence_classification" \
+--device "mps" \
+--num_labels 2 \
+--output_dir "model_saves/intermediate_XED_binary_01"
+
+python3 trainer.py \
+--dataset_path "data/inter_XED/itesd_xed_fine_balanced.hf" \
+--model_path "roberta-base" \
+--data_type "sequence_classification" \
+--device "mps" \
+--num_labels 8 \
+--output_dir "model_saves/intermediate_XED_fine_01"
+
+🤖 -> 🥈 -> 🎯 Fine-Tune Target Model
+python3 trainer.py \
+--dataset_path "data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf" \
+--model_path "model_saves/intermediate_XED_binary_01/E03_A0.83_F0.83" \
+--data_type "sequence_classification" \
+--device "mps" \
+--num_labels 2 \
+--output_dir "model_saves/target-iSarcasm_inter-XED-binary_01"
+
+python3 trainer.py \
+--dataset_path "data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf" \
+--model_path "model_saves/intermediate_XED_fine_01/E02_A0.53_F0.53" \
+--local_files True \
+--data_type "sequence_classification" \
+--device "mps" \
+--num_labels 2 \
+--output_dir "model_saves/target-iSarcasm_inter-XED-fine_01"
+
+✅🤖 -> 🥈 Fine-Tune Intermediate Model from Checkpoint
+python3 trainer.py \
+--dataset_path "data/inter_XED/itesd_xed_binary_balanced.hf" \
+--model_path "roberta-base" \
+--data_type "sequence_classification" \
+--device "mps" \
+--num_labels 2 \
+--output_dir "model_saves/intermediate_XED_binary_01" \
+--checkpoint_load_path "model_saves/intermediate_XED_binary_01/E02_A0.83_F0.83/checkpoint.pt"
+
+✅🤖 -> 🥈 -> 🎯 Fine-Tune Target Model from Checkpoint
+python3 trainer.py \
+--dataset_path "data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf" \
+--model_path "model_saves/target-iSarcasm_inter-XED-fine_01/E02_A0.72_F0.52" \
+--local_files True \
+--data_type "sequence_classification" \
+--device "mps" \
+--num_labels 2 \
+--output_dir "model_saves/target-iSarcasm_inter-XED-fine_01" \
+--checkpoint_load_path "model_saves/target-iSarcasm_inter-XED-fine_01/E02_A0.72_F0.52/checkpoint.pt"
