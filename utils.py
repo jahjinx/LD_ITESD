@@ -1,5 +1,3 @@
-import params
-
 import random
 import numpy as np
 
@@ -30,7 +28,7 @@ def set_seeds(seed):
     np.random.seed(seed)
     set_seed(seed)
 
-def preprocessing_dyna(input_text, tokenizer):
+def preprocessing_dyna(input_text, tokenizer, max_length):
     """
     Returns <class transformers.tokenization_utils_base.BatchEncoding> with the following fields:
         - input_ids: list of token ids
@@ -39,7 +37,7 @@ def preprocessing_dyna(input_text, tokenizer):
     """
     return tokenizer(input_text['text'],
                      add_special_tokens = True,
-                     max_length = params.max_length,
+                     max_length = max_length,
                      truncation=True,
                      return_attention_mask = True,
                      )
@@ -83,7 +81,7 @@ def mc_preprocessing(examples, tokenizer, eval=False):
     if eval == True: #TODO why if statement here? Needed in preprocessing_dyna?
         tokenized_examples = tokenizer(full_context, options, padding=True, truncation=True, max_length=512)
     else:   
-        tokenized_examples = tokenizer(full_context, options, truncation=True)
+        tokenized_examples = tokenizer(full_context, options, truncation=True) #TODO add max_length=256?
         
     # Un-flatten
     return {k: [v[i:i+4] for i in range(0, len(v), 4)] for k, v in tokenized_examples.items()}       
@@ -106,9 +104,7 @@ def collate(features, tokenizer):
     Data collator that will dynamically pad the inputs via dataloader fn.
     """
     label_name = "label" if "label" in features[0].keys() else "labels"
-
     labels = [feature.get(label_name) for feature in features]
-
     labeless_feat = extract_inputs(label_name, features)
     
     # check if features are for multiple choice or sequence classification
@@ -165,20 +161,13 @@ def pad_batch(adjusted_features, tokenizer):
     batch = tokenizer.pad(adjusted_features,
                                  padding=True,
                                  max_length=None,
-                                 return_tensors="pt",
-                                 )
+                                 return_tensors="pt")
     return batch
 
-# def output_parameters():
-#     print(f"""
-#           Training Dataset: {params.dataset_path}
-#           Number of Labels: {params.num_labels}
-#           Batch Size: {params.batch_size}
-#           Learning Rate: {params.learning_rate}
-#           Weight Decay: {params.weight_decay}
-#           Epochs: {params.epochs}
-#           Output Directory: {params.output_dir}
-#           Save Frequency: {params.save_freq}
-#           Checkpoint Frequency: {params.checkpoint_freq}
-#           Max Length: {params.max_length}
-#           """)
+def metric_check(num_labels):
+    metric_average = "binary"
+    # check num labels for validation metrics
+    if num_labels > 2:
+        metric_average = "micro"
+    
+    return metric_average

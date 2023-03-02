@@ -1,4 +1,5 @@
 import os
+import argparse
 import numpy as np
 
 from utils import *
@@ -29,6 +30,7 @@ logging.set_verbosity_error()
 import logging
 logging.basicConfig(format='%(message)s', level=logging.INFO)
 
+# clean slates
 from datasets import disable_caching
 disable_caching()
 
@@ -40,117 +42,44 @@ g = torch.Generator()
 g.manual_seed(1)
 
 class Trainer:
-    """
-    Trainer is a simple training and eval loop for PyTorch, including tdqm 
-        and iMessage sending for progress monitoring.
-
-    Args
-    ---------------
-    model ([`PreTrainedModel`] or `torch.nn.Module`):
-        The model to train, evaluate or use for predictions.
-
-    device (`torch.device()`):
-        Device on which to put model and data.
-
-    tokenizer ([`PreTrainedTokenizerBase`]):
-        The tokenizer used to preprocess the data.
-
-    train_dataloader (`torch.utils.data.DataLoader`):
-        PyTorch data loading object to feed model training input data.
-
-    validation_dataloader (`torch.utils.data.DataLoader`):
-        PyTorch data loading object to feed model training input data.
-
-    epochs (float):
-        Number of epochs the model for which the model with train.
-
-    optimizer (`torch.optim.Optimizer`):
-
-    val_loss_fn (`torch.nn` loss function):
-
-    num_labels (float):
-        Number of labels for classification models to predict.
-        Defaults to 2.
-
-    output_dir (str):
-        Directory to which the model and model checkpoint will save
-
-    save_freq (float):
-        Frequency to save the model, by epoch. 
-        EX: 1 sets saving to every epoch, 2 to every other epoch.
-        If `None`, model will not be saved.
-        Defaults to `None`. 
-
-    checkpoint_freq (float):
-        Frequency to save the model checkpoints, by epoch. 
-        EX: 1 sets checkpointing to every epoch, 2 to every other epoch.
-        If `None`, no checkpoints will be saved.
-        Defaults to `None`.
-
-    checkpoint_load (str):
-        Path to a model's checkpoint.pt file.
-        If `None`, no checkpoint will load.
-        Defaults to `None`
-
-    phone_number (str):
-        Format: `+[COUNTRY_CODE]############`, no spaces, no dashes, no parentheses 
-        If not `None` and with valid phone number, will trigger
-            an applescript to iMessage epoch updates to given phone number
-        If `None`, no message will be sent.
-        Defaults to `None`.
-
-    """
     def __init__(self,
-                 dataset_path, 
-                 data_type,
-                 device, 
-                 num_labels=2,
-                 epochs=10,
-                 val_loss_fn=nn.CrossEntropyLoss(), 
-                 tokenizer=RobertaTokenizer.from_pretrained("roberta-base"), 
-                 output_dir=None, 
-                 save_freq=None,
-                 checkpoint_freq=None, 
-                 checkpoint_load=None,
-                 phone_number=None,):
-
-        self.datasets = load_from_disk(dataset_path)
-        self.data_type = data_type
-        self.device = torch.device(device)
-        self.num_labels = num_labels
-        self.epochs = epochs 
-        self.val_loss_fn = val_loss_fn 
-        self.tokenizer = tokenizer
+                 args: argparse.Namespace):
+        self.args = args   
+        self.param_log = self.log_params()  # log params to ensure consistency
+        self.datasets = load_from_disk(self.args.dataset_path)
+        self.device = torch.device(self.args.device)
         self.model = self.configure_model() 
-        self.optimizer = self.configure_optimizer()
-        self.output_dir = output_dir
-        self.save_freq = save_freq 
-        self.checkpoint_freq = checkpoint_freq
-        self.checkpoint_load = checkpoint_load
-        self.phone_number = phone_number
+        self.optimizer = self.configure_optimizer()        
+        self.val_loss_fn=nn.CrossEntropyLoss()         
+        self.tokenizer=RobertaTokenizer.from_pretrained(self.args.model_path, use_fast=True) 
+
         
     def configure_optimizer(self):
         optimizer = torch.optim.Adam(params=self.model.parameters(), 
-                                    lr=params.learning_rate,
-                                    weight_decay=params.weight_decay)
+                                    lr=self.args.learning_rate,
+                                    weight_decay=self.args.weight_decay)
         return optimizer
 
     def configure_model(self):
-        if self.data_type == "multiple_choice":
+        if self.args.data_type == "multiple_choice":
             logging.info('Loading RobertaForMultipleChoice model...')
-            model = RobertaForMultipleChoice.from_pretrained('roberta-base',
-                                                             num_labels = self.num_labels,
+            model = RobertaForMultipleChoice.from_pretrained(self.args.model_path,
+                                                             num_labels = self.args.num_labels,
                                                              output_attentions = False,
-                                                             output_hidden_states = False,
-                                                             )
-        elif self.data_type == "sequence_classification":
-            # Load the RobertaForSequenceClassification model
+                                                             output_hidden_states = False, 
+                                                             local_files_only=self.args.local_files,
+                                                             # Ignore for fine-tuning Target from Intermediate with different sized num_labels
+                                                             ignore_mismatched_sizes=True,) 
+    
+        elif self.args.data_type == "sequence_classification":
             logging.info('Loading RobertaForSequenceClassification model...')
-            model = RobertaForSequenceClassification.from_pretrained('roberta-base',
-                                                                     num_labels = self.num_labels,
+            model = RobertaForSequenceClassification.from_pretrained(self.args.model_path,
+                                                                     num_labels = self.args.num_labels,
                                                                      output_attentions = False,
                                                                      output_hidden_states = False,
-                                                                     )        
+                                                                     local_files_only=self.args.local_files,
+                                                                     # Ignore for fine-tuning Target from Intermediate with different sized num_labels
+                                                                     ignore_mismatched_sizes=True,)
         model.to(self.device)
 
         return model
@@ -158,8 +87,8 @@ class Trainer:
     def fit(self):
         # check for existing checkpoint
         current_epoch, val_loss = self.load_checkpoint()
-
-        for epoch in range(current_epoch, self.epochs+1):
+        
+        for epoch in range(current_epoch, self.args.epochs+1):
             # ==================== Training ====================
             # Set model to training mode
             self.model.train()
@@ -198,11 +127,8 @@ class Trainer:
 
                 # ==================== Validate ====================
                 
-                # check num labels for validation metrics
-                if self.num_labels > 2:
-                    metric_average = "micro"
-                else:
-                    metric_average = "binary"
+                # set F1 to binary or micro based on num labels
+                metric_average = metric_check(self.num_labels)
 
                 val_loss, val_acc, val_f1, val_recall, val_precision = self.validate(self.model, 
                                                                                      self.validation_dataloader(), 
@@ -226,8 +152,8 @@ class Trainer:
                 logging.info('')
                 
                 # ==================== Notify ====================
-                if self.phone_number != None:
-                    message = f"{self.output_Dir} epoch {epoch}:\nAccuracy: {round(val_acc, 2)} \nF1: {round(val_f1, 2)}"
+                if self.args.phone_number != None:
+                    message = f"{self.args.output_Dir} epoch {epoch}:\nAccuracy: {round(val_acc, 2)} \nF1: {round(val_f1, 2)}"
                     self.send_message(message)
 
     def validate(self, model, val_dl, device, loss_fn, metric_average):
@@ -294,40 +220,37 @@ class Trainer:
 
     def get_dataloader(self, split) -> DataLoader:
 
-        if self.data_type == "multiple_choice":
+        if self.args.data_type == "multiple_choice":
             logging.info('Preprocessing for multiple_choice...')
             encoded_datasets = self.datasets.map(mc_preprocessing, 
                                                  batched=True, 
                                                  fn_kwargs={"tokenizer": self.tokenizer,
                                                             'eval': False}) #TODO Paramaterieze eval
             
-        elif self.data_type == "sequence_classification":
+        elif self.args.data_type == "sequence_classification":
             logging.info('Preprocessing for sequence_classification...')
             encoded_datasets = self.datasets.map(preprocessing_dyna, 
                                                  batched=True, 
-                                                 fn_kwargs={"tokenizer": self.tokenizer}) 
+                                                 fn_kwargs={"tokenizer": self.tokenizer,
+                                                            "max_length": self.args.max_length}) 
 
-        logging.info(f'Prepping Dataloader for {self.data_type}...')
+        logging.info(f'Prepping Dataloader for {self.args.data_type}, {split} split...')
         features = construct_input(encoded_datasets[split])
-        
-        dataloader = DataLoader(
-                features,
-                sampler = RandomSampler(features),
-                batch_size = params.batch_size,
-                worker_init_fn=seed_worker,
-                generator=g,
-                # lambda to pass tokenizer to collate_fn via dataloader
-                collate_fn=lambda batch: collate(batch, tokenizer=self.tokenizer)
-                )
-        
+        dataloader = DataLoader(features,
+                                sampler = RandomSampler(features),
+                                batch_size = self.args.batch_size,
+                                worker_init_fn=seed_worker,
+                                generator=g,
+                                # lambda to pass tokenizer to collate_fn via dataloader
+                                collate_fn=lambda batch: collate(batch, tokenizer=self.tokenizer))        
         return dataloader
     
     def save_model(self, epoch, model, val_acc=0, val_f1=0):
-        if self.save_freq != None and ((epoch)%self.save_freq == 0):
+        if self.args.save_freq != None and ((epoch)%self.args.save_freq == 0):
             
             save_name = f'E{str(epoch).zfill(2)}_A{round(val_acc, 2)}_F{round(val_f1, 2)}'
 
-            results_path = os.path.join(self.output_dir, save_name)
+            results_path = os.path.join(self.args.output_dir, save_name)
             
             try:
                 # model save
@@ -340,23 +263,22 @@ class Trainer:
                 pass
         
         else:
-            logging.info(f"\t ! Save Directory: {self.output_dir}, \
-                                Save Frequency: {self.save_freq}, \
+            logging.info(f"\t ! Save Directory: {self.args.output_dir}, \
+                                Save Frequency: {self.args.save_freq}, \
                                 Epoch: {epoch}")
             
     def save_checkpoint(self, epoch, model, loss,  val_acc=0, val_f1=0):
 
-        if self.checkpoint_freq != None and ((epoch)%self.checkpoint_freq == 0):
+        if self.args.checkpoint_freq != None and ((epoch)%self.args.checkpoint_freq == 0):
             checkpoint_name = f'E{str(epoch).zfill(2)}_A{round(val_acc, 2)}_F{round(val_f1, 2)}'
-            results_path = os.path.join(self.output_dir, checkpoint_name, "checkpoint.pt")
+            results_path = os.path.join(self.args.output_dir, checkpoint_name, "checkpoint.pt")
 
             try:
                 # model save
                 torch.save({'epoch': epoch,
                             'model_state_dict': model.state_dict(),
                             'optimizer_state_dict': self.optimizer.state_dict(),
-                            'loss': loss,
-                            }, results_path)
+                            'loss': loss}, results_path)
             
                 logging.info(f'\t * Model checkpoint saved to {results_path}')
             
@@ -365,14 +287,15 @@ class Trainer:
                 pass
         
         else:
-            logging.info(f"\t ! Checkpoint Directory: {self.output_dir}, \
-                                Save Frequency: {self.checkpoint_freq}, \
-                                Epoch {epoch}")
+            logging.info(f"\t ! Checkpoint Not Saved this Epoch \n \
+                           \tCheckpoint Directory: {self.args.output_dir} \n \
+                           \tSave Frequency: {self.args.checkpoint_freq} \n \
+                           \tEpoch {epoch}")
 
     def load_checkpoint(self):
         # load checkpoint if existing
-        if self.checkpoint_load != None:
-            checkpoint = torch.load(self.checkpoint_load)
+        if self.args.checkpoint_load_path != None:
+            checkpoint = torch.load(self.args.checkpoint_load_path)
             self.model.load_state_dict(checkpoint['model_state_dict'])
             self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
             current_epoch = checkpoint['epoch']+1 # increment from last epoch
@@ -384,6 +307,56 @@ class Trainer:
 
         return current_epoch, val_loss
 
+    def log_params(self):
+        logging.info(f"""
+            Training Dataset: {self.args.dataset_path}
+            Number of Labels: {self.args.num_labels}
+            Batch Size: {self.args.batch_size}
+            Learning Rate: {self.args.learning_rate}
+            Weight Decay: {self.args.weight_decay}
+            Epochs: {self.args.epochs}
+            Output Directory: {self.args.output_dir}
+            Save Frequency: {self.args.save_freq}
+            Checkpoint Frequency: {self.args.checkpoint_freq}
+            Max Length: {self.args.max_length}
+            """)
+        
     def send_message(self, message):
-        os.system('osascript scripts/sendMessage.applescript {} "{}"'.format(self.phone_number, message))
+        os.system('osascript scripts/sendMessage.applescript {} "{}"'.format(self.args.phone_number, message))
         logging.info("\t * Epoch Notification Sent")
+        
+def get_parser():
+    parser = argparse.ArgumentParser(description="Training")
+    # data parameters
+    parser.add_argument("--dataset_path", required=True, type=str, help="path to HF dataset")
+    parser.add_argument("--data_type", choices=["sequence_classification", "multiple_choice"], required=False, type=str, default='sequence_classification', help="Type of task for this model.")
+    # model
+    parser.add_argument("--model_path", required=False, type=str, default='roberta-base', help="path to model for fine-tuning and intermediate fine-tuning. use `roberta-base` for model from HuggingFace")
+    parser.add_argument("--local_files", required=False, type=bool, default=False, help="Set to True if loading a local model and tokenizer")
+    parser.add_argument("--checkpoint_load_path", required=False, type=str, default=None, help="Path to a model's checkpoint.pt file. If `None`, no checkpoint will load.")
+    # model hyperparameters
+    parser.add_argument("--device", type=str, default="cpu", help="cpu, gpu, or mps")
+    parser.add_argument("--num_labels", default=2, type=int, help="Number of Labels in Dataset")
+    parser.add_argument("--epochs", default=10, type=int, help="Number of Epochs to Train")
+    parser.add_argument("--batch_size", type=int, default=16, help="batch size")
+    parser.add_argument("--learning_rate", type=float, default=1e-05, help="learning rate")
+    parser.add_argument("--weight_decay", default=0.0, type=float, help="Weight decay if we apply some.")
+    parser.add_argument("--max_length", default=256, type=int, help="max length of dataset")
+    # saving
+    parser.add_argument("--output_dir", type=str, help="Path to Save/Checkpoint Model")
+    parser.add_argument("--save_freq", default=1, type=int, help="How Often to Save Model (By Epoch")
+    parser.add_argument("--checkpoint_freq", default=2, type=int, help="How Often to Save Checkpoint (Float, By Epoch, 'None' if No Checkpointing")
+    parser.add_argument("--phone_number", type=str, default=None, help="`+[COUNTRY_CODE]############`, no spaces, no dashes, no parentheses ")
+    return parser
+
+def train(args):
+    trainer = Trainer(args)
+    trainer.fit()
+    
+def main():
+    parser = get_parser()
+    args = parser.parse_args()
+    train(args)
+
+if __name__ == '__main__':
+    main()
