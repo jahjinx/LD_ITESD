@@ -1,9 +1,11 @@
 .DS_Store
-/__pycache__
-/.ipynb_checkpoints
+**/__pycache__/
+**/.ipynb_checkpoints
+*.ipynb_checkpoints
 /doc_documentation
 /doc_research_papers
 /.vscode
+*.pyc
 
 # include these top-level directores but only specific content
 /data/*
