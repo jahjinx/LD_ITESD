@@ -2,6 +2,9 @@ This file gives examples of how to run the trainer.py script from the command
 line in order to train control, target, and intermediate models for this research.
 
 🤖 -> 🎯 Fine-Tune Control Models
+    Fine-tuning control models requires the dataset path, core model/model path
+    dataset type and number of labels.
+
 python3 trainer.py \
 --dataset_path "data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf" \
 --model_path "roberta-base" \
@@ -11,6 +14,10 @@ python3 trainer.py \
 --output_dir "model_saves/control_iSarcasm_01"
 
 🤖 -> 🥈 Fine-Tune Intermediate Model
+    Fine-tuning an intermediate model is the same as fine-tuning a control model.
+    It requires the dataset path, core model/model path dataset type and number 
+    of labels.
+
 python3 trainer.py \
 --dataset_path "data/inter_cosmosqa/itesd_cosmosqa_balanced.hf" \
 --model_path "roberta-base" \
@@ -36,6 +43,10 @@ python3 trainer.py \
 --output_dir "model_saves/intermediate_XED_fine_01"
 
 🤖 -> 🥈 -> 🎯 Fine-Tune Target Model
+    Fine-tuning a target model is similar to the above two processes. However, 
+    rather than require the base/core RoBERTa model, we select an intermediate
+    model to fine-tune via the model_path.
+
 python3 trainer.py \
 --dataset_path "data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf" \
 --model_path "model_saves/intermediate_XED_binary_01/E03_A0.83_F0.83" \
@@ -54,6 +65,9 @@ python3 trainer.py \
 --output_dir "model_saves/target-iSarcasm_inter-XED-fine_01"
 
 ✅🤖 -> 🥈 Fine-Tune Intermediate Model from Checkpoint
+    Fine-tuning from a checkpoint requires designation of the base/core model as
+    well as the checkpoint path from which to load weights, optimizer state, etc.
+
 python3 trainer.py \
 --dataset_path "data/inter_XED/itesd_xed_binary_balanced.hf" \
 --model_path "roberta-base" \
@@ -64,6 +78,10 @@ python3 trainer.py \
 --checkpoint_load_path "model_saves/intermediate_XED_binary_01/E02_A0.83_F0.83/checkpoint.pt"
 
 ✅🤖 -> 🥈 -> 🎯 Fine-Tune Target Model from Checkpoint
+        Fine-tuning a target model from a checkpoint requires designation of the 
+        last intermediate model epoch via model_path as well as the checkpoint 
+        path from which to load weights, optimizer state, etc.
+
 python3 trainer.py \
 --dataset_path "data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf" \
 --model_path "model_saves/target-iSarcasm_inter-XED-fine_01/E02_A0.72_F0.52" \
