@@ -1,33 +1,37 @@
+This file details dataset split sizes and sources.
+
 These are splits of total dataset rather than validation being an x% of training data
 
-Note: it is difficult to get perfect splits when balancing train sets, but approx
-will work fine.
-
 ✅ XED_fine
+	Source: HuggingFace, "xed_en_fi", "en_annotated"
 	Total Samples: 11,896
 	Train (80%): 9,496
 	Val (~10%): 1,200
 	Test (~10%): 1,200
 
 ✅ XED_coarse
+	Source: HuggingFace, "xed_en_fi", "en_annotated"
 	Total Samples: 11,896
 	Train (80%): 9,496
 	Val (~10%): 1,200
 	Test (~10%): 1,200
 
 ✅ SARC
+	Source: https://www.kaggle.com/datasets/danofer/sarcasm
 	Total Samples: 100,000
 	Train (80%): 80,000
 	Val (10%): 10,000
 	Test (10%): 10,000
 
 ✅ IMDB
+	Source: https://ai.stanford.edu/~amaas/data/sentiment/
 	Total Samples: 50,000
 	Train (80%): 40,000
 	Val (10%): 5,000
 	Test (10%): 5,000
 
 ✅ HellaSwag - Existing Train/Validation Split, no Test Split *
+	Source: HuggingFace, "hellaswag"
 	Total Samples: 49,636
 	Train (~70%): 34,600
 	Val (20%): 10,042
@@ -35,6 +39,7 @@ will work fine.
 	** undersample adjustment: -311
 
 ✅ CosmosQA - Existing Train/Validation Split, no Test Split *
+	Source: HuggingFace, "cosmos_qa"
 	Total Samples: 28,082
 	Train (80%): 22,272
 	Val (~10%): 2,985
@@ -45,6 +50,7 @@ will work fine.
 		3,467 original training samples 
 			-> 628 (~10% of final total samples) observations removed for validation
 			-> Remaining 2,839 observations randomly oversampled to 4,266 observations
+	Source: https://sites.google.com/view/semeval2022-isarcasmeval
 	Total Samples: 6,294
 	Train (70%): 4,266
 	Val (10%): 628
@@ -52,3 +58,7 @@ will work fine.
 
 * datasets that include their own splits, which we do not alter
 ** As we undersampled these datasets in order to balance their training splits, there is leftover data. However, we do not add this data to the validation set, for example, as that may alter the distribution. 
+
+
+Note: it is difficult to get perfect splits when balancing train sets, but approx
+will work fine.
