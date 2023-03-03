@@ -1,46 +1,53 @@
-import os
-import argparse
-import numpy as np
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+@file  : trainer.py
+@author: jahjinx
+@contact : ja.h.jinx@gmail.com
+@date  : 2022/12/15 10:00
+@version: 1.0
+@desc  : 
+"""
 
+############## Imports ##############
 from utils import *
 
-import torch
-import torch.nn as nn
-from torchinfo import summary
-from torch.utils.data import DataLoader, RandomSampler
-
+import os
 import logging
+import argparse
+import warnings
+import numpy as np
 from tqdm import tqdm
 from datasets import load_from_disk
 
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader, RandomSampler
+
+from transformers import logging as tf_logging
 from transformers import RobertaTokenizer
 from transformers import RobertaTokenizer, RobertaForSequenceClassification, RobertaForMultipleChoice
 
 from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
 
-# suppress MPS CPU fallback warning
-import warnings
-warnings.filterwarnings(action='ignore', category=UserWarning)
-
-# suppress model warning
-from transformers import logging
-logging.set_verbosity_error()
-
+############## Settings ##############
 # set logging level
-import logging
 logging.basicConfig(format='%(message)s', level=logging.INFO)
 
-# clean slates
-from datasets import disable_caching
-disable_caching()
+# suppress model warning
+tf_logging.set_verbosity_error()
 
 # set general seeds
 set_seeds(1)
+
+# suppress MPS CPU fallback warning
+warnings.filterwarnings(action='ignore', category=UserWarning)
 
 # set dataloader generator seed
 g = torch.Generator()
 g.manual_seed(1)
 
+############## Classes/Functions ##############
 class Trainer:
     """
     Trainer is a simple training and eval loop for PyTorch, including tdqm 
@@ -63,9 +70,9 @@ class Trainer:
 
         
     def configure_optimizer(self):
-        optimizer = torch.optim.Adam(params=self.model.parameters(), 
-                                    lr=self.args.learning_rate,
-                                    weight_decay=self.args.weight_decay)
+        optimizer = torch.optim.Adam(params=self.model.parameters(),
+                                     lr=self.args.learning_rate,
+                                     weight_decay=self.args.weight_decay)
         return optimizer
 
     def configure_model(self):
@@ -116,25 +123,20 @@ class Trainer:
                     
                     # Forward pass
                     train_output = self.model(b_input_ids, 
-                                        token_type_ids = None, 
-                                        attention_mask = b_input_mask, 
-                                        labels = b_labels)
-                    
-                    # training_loss = compute_loss(train_output.logits, b_labels) # custom loss
-
+                                              token_type_ids = None,
+                                              attention_mask = b_input_mask,
+                                              labels = b_labels)
                     # Backward pass
                     train_output.loss.backward()
-                    # training_loss.backward() # custom loss
 
                     self.optimizer.step()
+                    
                     # Update tracking variables
                     tr_loss += train_output.loss.item()
-                    # tr_loss += training_loss.item() # custom loss
                     nb_tr_examples += b_input_ids.size(0)
                     nb_tr_steps += 1
 
                 # ==================== Validate ====================
-                
                 # set F1 to binary or micro based on num labels
                 metric_average = metric_check(self.args.num_labels)
 
@@ -257,9 +259,7 @@ class Trainer:
     
     def save_model(self, epoch, model, val_acc=0, val_f1=0):
         if self.args.save_freq != None and ((epoch)%self.args.save_freq == 0):
-            
             save_name = f'E{str(epoch).zfill(2)}_A{round(val_acc, 2)}_F{round(val_f1, 2)}'
-
             results_path = os.path.join(self.args.output_dir, save_name)
             
             try:
@@ -278,7 +278,6 @@ class Trainer:
                                 Epoch: {epoch}")
             
     def save_checkpoint(self, epoch, model, loss,  val_acc=0, val_f1=0):
-
         if self.args.checkpoint_freq != None and ((epoch)%self.args.checkpoint_freq == 0):
             checkpoint_name = f'E{str(epoch).zfill(2)}_A{round(val_acc, 2)}_F{round(val_f1, 2)}'
             results_path = os.path.join(self.args.output_dir, checkpoint_name, "checkpoint.pt")
@@ -319,17 +318,17 @@ class Trainer:
 
     def log_params(self):
         logging.info(f"""
-            Training Dataset: {self.args.dataset_path}
-            Number of Labels: {self.args.num_labels}
-            Batch Size: {self.args.batch_size}
-            Learning Rate: {self.args.learning_rate}
-            Weight Decay: {self.args.weight_decay}
-            Epochs: {self.args.epochs}
-            Output Directory: {self.args.output_dir}
-            Save Frequency: {self.args.save_freq}
-            Checkpoint Frequency: {self.args.checkpoint_freq}
-            Max Length: {self.args.max_length}
-            """)
+                     Training Dataset: {self.args.dataset_path}
+                     Number of Labels: {self.args.num_labels}
+                     Batch Size: {self.args.batch_size}
+                     Learning Rate: {self.args.learning_rate}
+                     Weight Decay: {self.args.weight_decay}
+                     Epochs: {self.args.epochs}
+                     Output Directory: {self.args.output_dir}
+                     Save Frequency: {self.args.save_freq}
+                     Checkpoint Frequency: {self.args.checkpoint_freq}
+                     Max Length: {self.args.max_length}
+                     """)
         
     def send_message(self, message):
         os.system('osascript scripts/sendMessage.applescript {} "{}"'.format(self.args.phone_number, message))

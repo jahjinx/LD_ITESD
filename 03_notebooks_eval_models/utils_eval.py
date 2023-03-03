@@ -1,19 +1,34 @@
-import os
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+@file  : utils_eval.py
+@author: jahjinx
+@contact : ja.h.jinx@gmail.com
+@date  : 2022/12/15 10:00
+@version: 1.0
+@desc  : 
+"""
+
+############## Imports ##############
 from utils import *
+
+import os
+import warnings
 import pandas as pd
 from tqdm import tqdm
+from datasets import disable_caching
 
 from transformers import RobertaTokenizer, RobertaForSequenceClassification, RobertaForMultipleChoice
 from sklearn.metrics import accuracy_score, f1_score
 
+############## Settings ##############
 # suppress MPS CPU fallback warning
-import warnings
 warnings.filterwarnings(action='ignore', category=UserWarning)
 
 # clean slates
-from datasets import disable_caching
 disable_caching()
 
+############## Classes/Functions ##############
 def parse_model_dir(top_level_dir):
     """
     Given the top-level-directory containing each epoch of our saved model,

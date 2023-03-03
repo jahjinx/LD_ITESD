@@ -1,14 +1,28 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+@file  : utils.py
+@author: jahjinx
+@contact : ja.h.jinx@gmail.com
+@date  : 2022/12/15 10:00
+@version: 1.0
+@desc  : 
+"""
+
+############## Imports ##############
 import random
+import logging
 import numpy as np
 
 import torch
 import platform
 from transformers import set_seed
 
+############## Settings ##############
 # set logging level
-import logging
 logging.basicConfig(format='%(message)s', level=logging.INFO)
 
+############## Classes/Functions ##############
 def platform_check():
     if "arm" in platform.platform():
         print(f"We're Armed: {platform.platform()}")
@@ -47,7 +61,6 @@ def preprocessing_dyna(input_text, tokenizer, max_length, eval=False):
                                        max_length = max_length,
                                        truncation=True,
                                        return_attention_mask = True)
-        
     return tokenized_examples
 
 def mc_preprocessing(examples, tokenizer,max_length, eval=False):
@@ -59,10 +72,8 @@ def mc_preprocessing(examples, tokenizer,max_length, eval=False):
     if 'ending0' in examples.keys():
         # designate ending names
         ending_names = ["ending0", "ending1", "ending2", "ending3"]
-
         # Repeat each first sentence four times to go with the four possibilities of second sentences.
         full_context = [[context] * 4 for context in examples["ctx_a"]]
-
         # Grab all second sentences possible for each context.
         question_headers = examples["ctx_b"]
         # merge question headers with options
@@ -85,7 +96,7 @@ def mc_preprocessing(examples, tokenizer,max_length, eval=False):
     else:
         print("ERROR: ending names not found")
     
-    # Flatten everything
+    # Flatten
     full_context = sum(full_context, [])
     options = sum(options, [])
         
@@ -103,7 +114,6 @@ def mc_preprocessing(examples, tokenizer,max_length, eval=False):
                                        max_length = max_length,
                                        truncation=True,
                                        return_attention_mask = True)
-        
     # Un-flatten
     return {k: [v[i:i+4] for i in range(0, len(v), 4)] for k, v in tokenized_examples.items()}       
 
@@ -153,6 +163,7 @@ def collate(features, tokenizer):
 
     # Add back labels
     batch.append(torch.tensor(labels, dtype=torch.int64))
+    
     return batch
 
 def extract_inputs(label_name, features):
@@ -180,9 +191,9 @@ def pad_batch(adjusted_features, tokenizer):
     This function is primarily used in conjunction with the collate function.
     """
     batch = tokenizer.pad(adjusted_features,
-                                 padding=True,
-                                 max_length=None,
-                                 return_tensors="pt")
+                          padding=True,
+                          max_length=None,
+                          return_tensors="pt")
     return batch
 
 def metric_check(num_labels):
