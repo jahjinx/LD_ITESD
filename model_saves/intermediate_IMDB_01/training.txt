@@ -1,0 +1,129 @@
+Epoch 1: 100%|██████████| 2500/2500 [56:47<00:00,  1.36s/batch]
+	 Validation 312: 100%|██████████| 313/313 [02:10<00:00,  2.41batch/s]
+
+ 	 - Train loss: 0.206828
+	 - Validation Loss: 0.167417
+	 - Validation Accuracy: 0.936502
+	 - Validation F1: 0.932508
+	 - Validation Recall: 0.927879
+	 - Validation Precision: 0.946322 
+
+	 * Model @ epoch 1 saved to model_saves/intermediate_IMDB_02_WD0/E01_A0.94_F0.93
+	 * Model checkpoint saved to model_saves/intermediate_IMDB_02_WD0/E01_A0.94_F0.93/checkpoint.pt
+
+Epoch 2: 100%|██████████| 2500/2500 [57:03<00:00,  1.37s/batch]
+	 Validation 312: 100%|██████████| 313/313 [02:08<00:00,  2.44batch/s]
+
+ 	 - Train loss: 0.133239
+	 - Validation Loss: 0.153668
+	 - Validation Accuracy: 0.944688
+	 - Validation F1: 0.940854
+	 - Validation Recall: 0.934532
+	 - Validation Precision: 0.954068 
+
+	 * Model @ epoch 2 saved to model_saves/intermediate_IMDB_02_WD0/E02_A0.94_F0.94
+	 * Model checkpoint saved to model_saves/intermediate_IMDB_02_WD0/E02_A0.94_F0.94/checkpoint.pt
+
+Epoch 3: 100%|██████████| 2500/2500 [56:33<00:00,  1.36s/batch]
+	 Validation 312: 100%|██████████| 313/313 [02:07<00:00,  2.45batch/s]
+
+ 	 - Train loss: 0.089415
+	 - Validation Loss: 0.178322
+	 - Validation Accuracy: 0.940695
+	 - Validation F1: 0.936089
+	 - Validation Recall: 0.943997
+	 - Validation Precision: 0.935775 
+
+	 * Model @ epoch 3 saved to model_saves/intermediate_IMDB_02_WD0/E03_A0.94_F0.94
+	 * Model checkpoint saved to model_saves/intermediate_IMDB_02_WD0/E03_A0.94_F0.94/checkpoint.pt
+
+Epoch 4: 100%|██████████| 2500/2500 [56:39<00:00,  1.36s/batch]
+	 Validation 312: 100%|██████████| 313/313 [02:08<00:00,  2.44batch/s]
+
+ 	 - Train loss: 0.058940
+	 - Validation Loss: 0.181928
+	 - Validation Accuracy: 0.945088
+	 - Validation F1: 0.942062
+	 - Validation Recall: 0.937729
+	 - Validation Precision: 0.953527 
+
+	 * Model @ epoch 4 saved to model_saves/intermediate_IMDB_02_WD0/E04_A0.95_F0.94
+	 * Model checkpoint saved to model_saves/intermediate_IMDB_02_WD0/E04_A0.95_F0.94/checkpoint.pt
+
+Epoch 5: 100%|██████████| 2500/2500 [56:42<00:00,  1.36s/batch]
+	 Validation 312: 100%|██████████| 313/313 [02:08<00:00,  2.44batch/s]
+
+ 	 - Train loss: 0.045195
+	 - Validation Loss: 0.228724
+	 - Validation Accuracy: 0.941294
+	 - Validation F1: 0.935713
+	 - Validation Recall: 0.927346
+	 - Validation Precision: 0.952601 
+
+	 * Model @ epoch 5 saved to model_saves/intermediate_IMDB_02_WD0/E05_A0.94_F0.94
+	 * Model checkpoint saved to model_saves/intermediate_IMDB_02_WD0/E05_A0.94_F0.94/checkpoint.pt
+
+Epoch 6: 100%|██████████| 2500/2500 [56:26<00:00,  1.35s/batch]
+	 Validation 312: 100%|██████████| 313/313 [02:07<00:00,  2.46batch/s]
+
+ 	 - Train loss: 0.035857
+	 - Validation Loss: 0.218112
+	 - Validation Accuracy: 0.942692
+	 - Validation F1: 0.938040
+	 - Validation Recall: 0.937091
+	 - Validation Precision: 0.946431 
+
+	 * Model @ epoch 6 saved to model_saves/intermediate_IMDB_02_WD0/E06_A0.94_F0.94
+	 * Model checkpoint saved to model_saves/intermediate_IMDB_02_WD0/E06_A0.94_F0.94/checkpoint.pt
+
+Epoch 7: 100%|██████████| 2500/2500 [56:25<00:00,  1.35s/batch]
+	 Validation 312: 100%|██████████| 313/313 [02:07<00:00,  2.46batch/s]
+
+ 	 - Train loss: 0.028935
+	 - Validation Loss: 0.268521
+	 - Validation Accuracy: 0.940296
+	 - Validation F1: 0.934999
+	 - Validation Recall: 0.923489
+	 - Validation Precision: 0.954494 
+
+	 * Model @ epoch 7 saved to model_saves/intermediate_IMDB_02_WD0/E07_A0.94_F0.93
+	 * Model checkpoint saved to model_saves/intermediate_IMDB_02_WD0/E07_A0.94_F0.93/checkpoint.pt
+
+Epoch 8: 100%|██████████| 2500/2500 [56:23<00:00,  1.35s/batch]
+	 Validation 312: 100%|██████████| 313/313 [02:07<00:00,  2.46batch/s]
+
+ 	 - Train loss: 0.024128
+	 - Validation Loss: 0.256610
+	 - Validation Accuracy: 0.942292
+	 - Validation F1: 0.937255
+	 - Validation Recall: 0.926655
+	 - Validation Precision: 0.956789 
+
+	 * Model @ epoch 8 saved to model_saves/intermediate_IMDB_02_WD0/E08_A0.94_F0.94
+	 * Model checkpoint saved to model_saves/intermediate_IMDB_02_WD0/E08_A0.94_F0.94/checkpoint.pt
+
+Epoch 9: 100%|██████████| 2500/2500 [56:25<00:00,  1.35s/batch]
+	 Validation 312: 100%|██████████| 313/313 [02:07<00:00,  2.46batch/s]
+
+ 	 - Train loss: 0.021438
+	 - Validation Loss: 0.339554
+	 - Validation Accuracy: 0.939497
+	 - Validation F1: 0.931775
+	 - Validation Recall: 0.915197
+	 - Validation Precision: 0.958957 
+
+	 * Model @ epoch 9 saved to model_saves/intermediate_IMDB_02_WD0/E09_A0.94_F0.93
+	 * Model checkpoint saved to model_saves/intermediate_IMDB_02_WD0/E09_A0.94_F0.93/checkpoint.pt
+
+Epoch 10: 100%|██████████| 2500/2500 [56:24<00:00,  1.35s/batch]
+	 Validation 312: 100%|██████████| 313/313 [02:07<00:00,  2.46batch/s]
+
+ 	 - Train loss: 0.017768
+	 - Validation Loss: 0.286486
+	 - Validation Accuracy: 0.942292
+	 - Validation F1: 0.935792
+	 - Validation Recall: 0.934600
+	 - Validation Precision: 0.945325 
+
+	 * Model @ epoch 10 saved to model_saves/intermediate_IMDB_02_WD0/E10_A0.94_F0.94
+	 * Model checkpoint saved to model_saves/intermediate_IMDB_02_WD0/E10_A0.94_F0.94/checkpoint.pt

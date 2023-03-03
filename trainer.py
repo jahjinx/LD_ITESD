@@ -42,6 +42,14 @@ g = torch.Generator()
 g.manual_seed(1)
 
 class Trainer:
+    """
+    Trainer is a simple training and eval loop for PyTorch, including tdqm 
+        and iMessage sending for progress monitoring.
+    
+    Args
+    ---------------
+    See argparse and argparse help below.
+    """
     def __init__(self,
                  args: argparse.Namespace):
         self.args = args   
@@ -128,7 +136,7 @@ class Trainer:
                 # ==================== Validate ====================
                 
                 # set F1 to binary or micro based on num labels
-                metric_average = metric_check(self.num_labels)
+                metric_average = metric_check(self.args.num_labels)
 
                 val_loss, val_acc, val_f1, val_recall, val_precision = self.validate(self.model, 
                                                                                      self.validation_dataloader(), 
@@ -225,6 +233,7 @@ class Trainer:
             encoded_datasets = self.datasets.map(mc_preprocessing, 
                                                  batched=True, 
                                                  fn_kwargs={"tokenizer": self.tokenizer,
+                                                            "max_length": self.args.max_length,
                                                             'eval': False}) #TODO argparse eval?
             
         elif self.args.data_type == "sequence_classification":
@@ -232,7 +241,8 @@ class Trainer:
             encoded_datasets = self.datasets.map(preprocessing_dyna, 
                                                  batched=True, 
                                                  fn_kwargs={"tokenizer": self.tokenizer,
-                                                            "max_length": self.args.max_length}) 
+                                                            "max_length": self.args.max_length,
+                                                            'eval': False}) 
 
         logging.info(f'Prepping Dataloader for {self.args.data_type}, {split} split...')
         features = construct_input(encoded_datasets[split])
@@ -328,24 +338,24 @@ class Trainer:
 def get_parser():
     parser = argparse.ArgumentParser(description="Training")
     # data parameters
-    parser.add_argument("--dataset_path", required=True, type=str, help="path to HF dataset")
-    parser.add_argument("--data_type", choices=["sequence_classification", "multiple_choice"], required=False, type=str, default='sequence_classification', help="Type of task for this model.")
+    parser.add_argument("--dataset_path", required=True, type=str, help="Path to HuggingFace DatasetDict or Similarly Compatible Dataset Object")
+    parser.add_argument("--data_type", choices=["sequence_classification", "multiple_choice"], required=False, type=str, default='sequence_classification', help="Type of Task for This Model to Solve")
     # model
-    parser.add_argument("--model_path", required=False, type=str, default='roberta-base', help="path to model for fine-tuning and intermediate fine-tuning. use `roberta-base` for model from HuggingFace")
-    parser.add_argument("--local_files", required=False, type=bool, default=False, help="Set to True if loading a local model and tokenizer")
-    parser.add_argument("--checkpoint_load_path", required=False, type=str, default=None, help="Path to a model's checkpoint.pt file. If `None`, no checkpoint will load.")
+    parser.add_argument("--model_path", required=False, type=str, default='roberta-base', help="Path to Model for Fine-Tuning and Intermediate Fine Tuning. Use `roberta-base` for to download from HuggingFace")
+    parser.add_argument("--local_files", required=False, type=bool, default=False, help="Set to True if loading a Local Model and Tokenizer")
+    parser.add_argument("--checkpoint_load_path", required=False, type=str, default=None, help="Path to a Model's Checkpoint.pt File. If `None`, No Checkpoint Will Load.")
     # model hyperparameters
-    parser.add_argument("--device", type=str, default="cpu", help="cpu, gpu, or mps")
-    parser.add_argument("--num_labels", default=2, type=int, help="Number of Labels in Dataset")
-    parser.add_argument("--epochs", default=10, type=int, help="Number of Epochs to Train")
-    parser.add_argument("--batch_size", type=int, default=16, help="batch size")
-    parser.add_argument("--learning_rate", type=float, default=1e-05, help="learning rate")
-    parser.add_argument("--weight_decay", default=0.0, type=float, help="Weight decay if we apply some.")
-    parser.add_argument("--max_length", default=256, type=int, help="max length of dataset")
+    parser.add_argument("--device", choices=["cpu", "gpu", "mps"], type=str, default="cpu", help="cpu, gpu, or mps")
+    parser.add_argument("--num_labels",  type=int, default=2, help="Number of Labels in Dataset")
+    parser.add_argument("--epochs",  type=int, default=10, help="Number of Epochs to Train")
+    parser.add_argument("--batch_size", type=int, default=16, help="Batch Size for Dataloader")
+    parser.add_argument("--learning_rate", type=float, default=1e-05, help="Learning Rate for Optimizer")
+    parser.add_argument("--weight_decay",  type=float, default=0.0, help="Weight Decay for Optimizer")
+    parser.add_argument("--max_length", type=int, default=256, help="Length to which we Truncate/Pad Sequences")
     # saving
     parser.add_argument("--output_dir", type=str, help="Path to Save/Checkpoint Model")
-    parser.add_argument("--save_freq", default=1, type=int, help="How Often to Save Model (By Epoch")
-    parser.add_argument("--checkpoint_freq", default=2, type=int, help="How Often to Save Checkpoint (Float, By Epoch, 'None' if No Checkpointing")
+    parser.add_argument("--save_freq",  type=int, default=1, help="How Often to Save Model (By Epoch)")
+    parser.add_argument("--checkpoint_freq", type=int, default=2, help="How Often to Save Checkpoint (Float, By Epoch, 'None' if No Checkpointing is Required")
     parser.add_argument("--phone_number", type=str, default=None, help="`+[COUNTRY_CODE]############`, no spaces, no dashes, no parentheses ")
     return parser
 

@@ -27,22 +27,34 @@ def set_seeds(seed):
     random.seed(seed)
     np.random.seed(seed)
     set_seed(seed)
-
-def preprocessing_dyna(input_text, tokenizer, max_length):
+    
+def preprocessing_dyna(input_text, tokenizer, max_length, eval=False):
     """
     Returns <class transformers.tokenization_utils_base.BatchEncoding> with the following fields:
         - input_ids: list of token ids
         - attention_mask: list of indices (0,1) specifying which tokens should considered by the model 
           (return_attention_mask = True).
     """
-    return tokenizer(input_text['text'],
-                     add_special_tokens = True,
-                     max_length = max_length,
-                     truncation=True,
-                     return_attention_mask = True,
-                     )
-    
-def mc_preprocessing(examples, tokenizer, eval=False):
+    # Tokenize
+    if eval == True: # for evaluation
+        tokenized_examples = tokenizer(input_text['text'],
+                                       padding = True,
+                                       max_length = max_length,
+                                       truncation=True)
+    else: # for training  
+        tokenized_examples = tokenizer(input_text['text'],
+                                       add_special_tokens = True,
+                                       max_length = max_length,
+                                       truncation=True,
+                                       return_attention_mask = True)
+        
+    return tokenized_examples
+
+def mc_preprocessing(examples, tokenizer,max_length, eval=False):
+    """
+    This function determines the input data source (HellaSwag or CosmosQA), merges contexts/questions/answers where
+    appropriate, then encodes and tokenizes the data. It structures the output into a dictionary acceptable by the dataloaders.
+    """
     # hellaswag uses ending0, ending1, ending2, ending3
     if 'ending0' in examples.keys():
         # designate ending names
@@ -78,17 +90,26 @@ def mc_preprocessing(examples, tokenizer, eval=False):
     options = sum(options, [])
         
     # Tokenize
-    if eval == True: #TODO why if statement here? Needed in preprocessing_dyna?
-        tokenized_examples = tokenizer(full_context, options, padding=True, truncation=True, max_length=512)
-    else:   
-        tokenized_examples = tokenizer(full_context, options, truncation=True) #TODO add max_length=256?
+    if eval == True: # for evaluation
+        tokenized_examples = tokenizer(full_context, 
+                                       options, 
+                                       padding=True, 
+                                       max_length=max_length, 
+                                       truncation=True)
+    else: # for training  
+        tokenized_examples = tokenizer(full_context, 
+                                       options,
+                                       add_special_tokens = True,
+                                       max_length = max_length,
+                                       truncation=True,
+                                       return_attention_mask = True)
         
     # Un-flatten
     return {k: [v[i:i+4] for i in range(0, len(v), 4)] for k, v in tokenized_examples.items()}       
 
 def construct_input(encoded_dataset_split):
     """
-    takes a DatasetDict split that includes "input_ids", "attention_mask", 
+    Takes a DatasetDict split that includes "input_ids", "attention_mask", 
     "label" features and constructs a list of dictionaries for the DataLoaders.
     """
     logging.info('Constructing Input...')

@@ -23,13 +23,21 @@ This repo is structured according to the sequence by which the code should be ru
 # Setup
 See `requirements.txt` for a list of dependencies and their versions. Additionally, running `scripts/conda-env-setup.sh` will create a compatible Conda environment for use with the code in this repo.
 
+<br />
+
+`pip install -r requirements.txt` <br />
+or <br />
+`scripts/conda-env-setup.sh` 
+
+<br />
+
 # 01 EDA
-The notebooks contained in the `/01_notebooks_EDA` directory are used to secure, explore, and prepare the individual datasets used in this research for training and testing pipelines. Perpetrations include balancing, splitting, and saving the datasets as HuggingFace DatasetDict objects for easier manipulation in subsequent steps. 
+The notebooks contained in the `01_notebooks_EDA` directory are used to secure, explore, and prepare the individual datasets used in this research for training and testing pipelines. Perpetrations include balancing, splitting, and saving the datasets as HuggingFace DatasetDict objects for easier manipulation in subsequent steps. 
 
 <br />
 
 # 02 Build Models
-The `/02_build_models` directory contains notes on the training processs for our control, intermediate, and target models as well as examples detailing how to train those models using `trainer.py` and the command line. 
+The `02_build_models` directory contains notes on the training processs for our control, intermediate, and target models as well as examples detailing how to train those models using `trainer.py` and the command line. 
 
 For example, in order to train one control model for 10 epochs, we run the following commands:
 
@@ -48,12 +56,12 @@ Most model hyperparameters are kept consistent between models and are therefore 
 <br />
 
 # 03 Evaluate Models
-`/03_evaluate_models` contains a notebook and supporting utilities for evaluating the performance of our control, intermediate, and target models on their respective test sets. The results are saved to the directories specified in the notebook.
+`03_evaluate_models` contains a notebook and supporting utilities for evaluating the performance of our control, intermediate, and target models on their respective test sets. The results are saved to the directories specified in the notebook.
 
 <br />
 
 # 04 Build Ensembles
-`/04_build_ensembles` walks us through the ensemble building process, which includes constructing the range of ensembles we intend to evaluate, aggregating the predictions of each ensemble's component inducers, and saving the results of each ensemble's evaluation to the file specified in the notebook.
+`04_build_ensembles` walks us through the ensemble building process, which includes constructing the range of ensembles we intend to evaluate, aggregating the predictions of each ensemble's component inducers, and saving the results of each ensemble's evaluation to the file specified in the notebook.
 
 <br />
 
@@ -63,4 +71,4 @@ The results directory contains the exported results of our evaluations as well a
 <br />
 
 # 🙅 Not In This Repo
-Due to size and storage limitations, this repo does not contain the specific models built for this research. It also does not include the source nor preprocessed datasets. While the models are not available here, the `model_saves` directory does contain notes on the training output for each model created. You may also secure the source datasets as well as preprocess those datasets appropriately by following the notebooks in `/01_notebooks_EDA`.
+Due to size and storage limitations, this repo does not contain the specific models built for this research. It also does not include the source nor preprocessed datasets. While the models are not available here, the `model_saves` directory does contain notes on the training output for each model created. You may also secure the source datasets as well as preprocess those datasets appropriately by following the notebooks in `01_notebooks_EDA`.

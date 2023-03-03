@@ -1,0 +1,130 @@
+Epoch 1: 100%|██████████| 267/267 [02:07<00:00,  2.10batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:07<00:00,  5.28batch/s]
+
+ 	 - Train loss: 0.590266
+	 - Validation Loss: 0.571224
+	 - Validation Accuracy: 0.725000
+	 - Validation F1: 0.427302
+	 - Validation Recall: 0.444524
+	 - Validation Precision: 0.460417 
+
+	 * Model @ epoch 1 saved to model_saves/target-iSarcasm_inter-CosmosQA_01/E01_A0.72_F0.43
+	 ! Checkpoint Directory: model_saves/target-iSarcasm_inter-CosmosQA_01, Save Frequency: None, Epoch 1
+
+Epoch 2: 100%|██████████| 267/267 [01:52<00:00,  2.37batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.04batch/s]
+
+ 	 - Train loss: 0.291383
+	 - Validation Loss: 0.715338
+	 - Validation Accuracy: 0.721875
+	 - Validation F1: 0.365024
+	 - Validation Recall: 0.374921
+	 - Validation Precision: 0.411012 
+
+	 * Model @ epoch 2 saved to model_saves/target-iSarcasm_inter-CosmosQA_01/E02_A0.72_F0.37
+	 ! Checkpoint Directory: model_saves/target-iSarcasm_inter-CosmosQA_01, Save Frequency: None, Epoch 2
+
+Epoch 3: 100%|██████████| 267/267 [01:55<00:00,  2.31batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:06<00:00,  6.65batch/s]
+
+ 	 - Train loss: 0.131534
+	 - Validation Loss: 0.834552
+	 - Validation Accuracy: 0.764062
+	 - Validation F1: 0.303312
+	 - Validation Recall: 0.251726
+	 - Validation Precision: 0.451667 
+
+	 * Model @ epoch 3 saved to model_saves/target-iSarcasm_inter-CosmosQA_01/E03_A0.76_F0.3
+	 ! Checkpoint Directory: model_saves/target-iSarcasm_inter-CosmosQA_01, Save Frequency: None, Epoch 3
+
+Epoch 4: 100%|██████████| 267/267 [01:52<00:00,  2.36batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.01batch/s]
+
+ 	 - Train loss: 0.064299
+	 - Validation Loss: 1.185045
+	 - Validation Accuracy: 0.768750
+	 - Validation F1: 0.301310
+	 - Validation Recall: 0.231131
+	 - Validation Precision: 0.552083 
+
+	 * Model @ epoch 4 saved to model_saves/target-iSarcasm_inter-CosmosQA_01/E04_A0.77_F0.3
+	 ! Checkpoint Directory: model_saves/target-iSarcasm_inter-CosmosQA_01, Save Frequency: None, Epoch 4
+
+Epoch 5: 100%|██████████| 267/267 [01:52<00:00,  2.38batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.15batch/s]
+
+ 	 - Train loss: 0.047286
+	 - Validation Loss: 1.148547
+	 - Validation Accuracy: 0.759375
+	 - Validation F1: 0.264107
+	 - Validation Recall: 0.204464
+	 - Validation Precision: 0.471667 
+
+	 * Model @ epoch 5 saved to model_saves/target-iSarcasm_inter-CosmosQA_01/E05_A0.76_F0.26
+	 ! Checkpoint Directory: model_saves/target-iSarcasm_inter-CosmosQA_01, Save Frequency: None, Epoch 5
+
+Epoch 6: 100%|██████████| 267/267 [01:52<00:00,  2.38batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.25batch/s]
+
+ 	 - Train loss: 0.042613
+	 - Validation Loss: 1.201437
+	 - Validation Accuracy: 0.728125
+	 - Validation F1: 0.441777
+	 - Validation Recall: 0.443839
+	 - Validation Precision: 0.510000 
+
+	 * Model @ epoch 6 saved to model_saves/target-iSarcasm_inter-CosmosQA_01/E06_A0.73_F0.44
+	 ! Checkpoint Directory: model_saves/target-iSarcasm_inter-CosmosQA_01, Save Frequency: None, Epoch 6
+
+Epoch 7: 100%|██████████| 267/267 [01:52<00:00,  2.38batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  6.96batch/s]
+
+ 	 - Train loss: 0.035140
+	 - Validation Loss: 1.383340
+	 - Validation Accuracy: 0.762500
+	 - Validation F1: 0.264782
+	 - Validation Recall: 0.224286
+	 - Validation Precision: 0.481250 
+
+	 * Model @ epoch 7 saved to model_saves/target-iSarcasm_inter-CosmosQA_01/E07_A0.76_F0.26
+	 ! Checkpoint Directory: model_saves/target-iSarcasm_inter-CosmosQA_01, Save Frequency: None, Epoch 7
+
+Epoch 8: 100%|██████████| 267/267 [01:54<00:00,  2.33batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.19batch/s]
+
+ 	 - Train loss: 0.037989
+	 - Validation Loss: 1.290641
+	 - Validation Accuracy: 0.740625
+	 - Validation F1: 0.282830
+	 - Validation Recall: 0.240060
+	 - Validation Precision: 0.467917 
+
+	 * Model @ epoch 8 saved to model_saves/target-iSarcasm_inter-CosmosQA_01/E08_A0.74_F0.28
+	 ! Checkpoint Directory: model_saves/target-iSarcasm_inter-CosmosQA_01, Save Frequency: None, Epoch 8
+
+Epoch 9: 100%|██████████| 267/267 [01:52<00:00,  2.38batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.22batch/s]
+
+ 	 - Train loss: 0.027574
+	 - Validation Loss: 1.271848
+	 - Validation Accuracy: 0.737500
+	 - Validation F1: 0.405275
+	 - Validation Recall: 0.405893
+	 - Validation Precision: 0.448056 
+
+	 * Model @ epoch 9 saved to model_saves/target-iSarcasm_inter-CosmosQA_01/E09_A0.74_F0.41
+	 ! Checkpoint Directory: model_saves/target-iSarcasm_inter-CosmosQA_01, Save Frequency: None, Epoch 9
+
+Epoch 10: 100%|██████████| 267/267 [01:53<00:00,  2.35batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  6.81batch/s]
+
+ 	 - Train loss: 0.032100
+	 - Validation Loss: 1.211068
+	 - Validation Accuracy: 0.775000
+	 - Validation F1: 0.362555
+	 - Validation Recall: 0.305595
+	 - Validation Precision: 0.525952 
+
+	 * Model @ epoch 10 saved to model_saves/target-iSarcasm_inter-CosmosQA_01/E10_A0.78_F0.36
+	 ! Checkpoint Directory: model_saves/target-iSarcasm_inter-CosmosQA_01, Save Frequency: None, Epoch 10
+

@@ -1,0 +1,131 @@
+Epoch 1: 100%|██████████| 5000/5000 [27:17<00:00,  3.05batch/s]  
+	 Validation 624: 100%|██████████| 625/625 [00:52<00:00, 11.82batch/s]
+
+ 	 - Train loss: 0.553480
+	 - Validation Loss: 0.507682
+	 - Validation Accuracy: 0.752300
+	 - Validation F1: 0.727120
+	 - Validation Recall: 0.707129
+	 - Validation Precision: 0.776271 
+
+	 * Model @ epoch 1 saved to model_saves/intermediate_SARC_01/E01_A0.75_F0.73
+	 * Model checkpoint saved to model_saves/intermediate_SARC_01/E01_A0.75_F0.73/checkpoint.pt
+
+Epoch 2: 100%|██████████| 5000/5000 [25:07<00:00,  3.32batch/s]  
+	 Validation 624: 100%|██████████| 625/625 [00:50<00:00, 12.46batch/s]
+
+ 	 - Train loss: 0.480337
+	 - Validation Loss: 0.497933
+	 - Validation Accuracy: 0.756200
+	 - Validation F1: 0.748114
+	 - Validation Recall: 0.769578
+	 - Validation Precision: 0.751305 
+
+	 * Model @ epoch 2 saved to model_saves/intermediate_SARC_01/E02_A0.76_F0.75
+	 * Model checkpoint saved to model_saves/intermediate_SARC_01/E02_A0.76_F0.75/checkpoint.pt
+
+Epoch 3: 100%|██████████| 5000/5000 [26:23<00:00,  3.16batch/s]  
+	 Validation 624: 100%|██████████| 625/625 [00:50<00:00, 12.30batch/s]
+
+ 	 - Train loss: 0.417137
+	 - Validation Loss: 0.524495
+	 - Validation Accuracy: 0.756700
+	 - Validation F1: 0.743141
+	 - Validation Recall: 0.749216
+	 - Validation Precision: 0.762820 
+
+	 * Model @ epoch 3 saved to model_saves/intermediate_SARC_01/E03_A0.76_F0.74
+	 * Model checkpoint saved to model_saves/intermediate_SARC_01/E03_A0.76_F0.74/checkpoint.pt
+
+Epoch 4: 100%|██████████| 5000/5000 [25:26<00:00,  3.27batch/s] 
+	 Validation 624: 100%|██████████| 625/625 [00:49<00:00, 12.57batch/s]
+
+ 	 - Train loss: 0.350467
+	 - Validation Loss: 0.564954
+	 - Validation Accuracy: 0.754500
+	 - Validation F1: 0.742897
+	 - Validation Recall: 0.751021
+	 - Validation Precision: 0.761656 
+
+	 * Model @ epoch 4 saved to model_saves/intermediate_SARC_01/E04_A0.75_F0.74
+	 * Model checkpoint saved to model_saves/intermediate_SARC_01/E04_A0.75_F0.74/checkpoint.pt
+
+Epoch 5: 100%|██████████| 5000/5000 [25:01<00:00,  3.33batch/s] 
+	 Validation 624: 100%|██████████| 625/625 [00:49<00:00, 12.66batch/s]
+
+ 	 - Train loss: 0.286711
+	 - Validation Loss: 0.649076
+	 - Validation Accuracy: 0.755800
+	 - Validation F1: 0.736355
+	 - Validation Recall: 0.729238
+	 - Validation Precision: 0.769288 
+
+	 * Model @ epoch 5 saved to model_saves/intermediate_SARC_01/E05_A0.76_F0.74
+	 * Model checkpoint saved to model_saves/intermediate_SARC_01/E05_A0.76_F0.74/checkpoint.pt
+
+Epoch 6: 100%|██████████| 5000/5000 [24:50<00:00,  3.35batch/s] 
+	 Validation 624: 100%|██████████| 625/625 [00:49<00:00, 12.72batch/s]
+
+ 	 - Train loss: 0.230201
+	 - Validation Loss: 0.731930
+	 - Validation Accuracy: 0.748600
+	 - Validation F1: 0.725136
+	 - Validation Recall: 0.713860
+	 - Validation Precision: 0.767037 
+
+	 * Model @ epoch 6 saved to model_saves/intermediate_SARC_01/E06_A0.75_F0.73
+	 * Model checkpoint saved to model_saves/intermediate_SARC_01/E06_A0.75_F0.73/checkpoint.pt
+
+# computer fell asleep on Epoch 7
+Epoch 7: 100%|██████████| 5000/5000 [54:20<00:00,  1.53batch/s]    
+	 Validation 624: 100%|██████████| 625/625 [00:50<00:00, 12.49batch/s]
+
+ 	 - Train loss: 0.186372
+	 - Validation Loss: 0.795462
+	 - Validation Accuracy: 0.751400
+	 - Validation F1: 0.737193
+	 - Validation Recall: 0.742912
+	 - Validation Precision: 0.758866 
+
+	 * Model @ epoch 7 saved to model_saves/intermediate_SARC_01/E07_A0.75_F0.74
+	 * Model checkpoint saved to model_saves/intermediate_SARC_01/E07_A0.75_F0.74/checkpoint.pt
+
+Epoch 8: 100%|██████████| 5000/5000 [25:47<00:00,  3.23batch/s] 
+	 Validation 624: 100%|██████████| 625/625 [00:49<00:00, 12.69batch/s]
+
+ 	 - Train loss: 0.151965
+	 - Validation Loss: 0.872914
+	 - Validation Accuracy: 0.746600
+	 - Validation F1: 0.733817
+	 - Validation Recall: 0.741164
+	 - Validation Precision: 0.754752 
+
+	 * Model @ epoch 8 saved to model_saves/intermediate_SARC_01/E08_A0.75_F0.73
+	 * Model checkpoint saved to model_saves/intermediate_SARC_01/E08_A0.75_F0.73/checkpoint.pt
+
+Epoch 9: 100%|██████████| 5000/5000 [24:58<00:00,  3.34batch/s] 
+	 Validation 624: 100%|██████████| 625/625 [00:49<00:00, 12.58batch/s]
+
+ 	 - Train loss: 0.126653
+	 - Validation Loss: 0.862469
+	 - Validation Accuracy: 0.747300
+	 - Validation F1: 0.733066
+	 - Validation Recall: 0.742833
+	 - Validation Precision: 0.747152 
+
+	 * Model @ epoch 9 saved to model_saves/intermediate_SARC_01/E09_A0.75_F0.73
+	 * Model checkpoint saved to model_saves/intermediate_SARC_01/E09_A0.75_F0.73/checkpoint.pt
+
+Epoch 10: 100%|██████████| 5000/5000 [25:00<00:00,  3.33batch/s]
+	 Validation 624: 100%|██████████| 625/625 [00:49<00:00, 12.69batch/s]
+
+ 	 - Train loss: 0.107192
+	 - Validation Loss: 1.000152
+	 - Validation Accuracy: 0.743600
+	 - Validation F1: 0.735861
+	 - Validation Recall: 0.762094
+	 - Validation Precision: 0.735555 
+
+	 * Model @ epoch 10 saved to model_saves/intermediate_SARC_01/E10_A0.74_F0.74
+	 * Model checkpoint saved to model_saves/intermediate_SARC_01/E10_A0.74_F0.74/checkpoint.pt
+

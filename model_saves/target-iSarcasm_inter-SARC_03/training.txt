@@ -1,0 +1,130 @@
+Epoch 1: 100%|██████████| 267/267 [02:06<00:00,  2.11batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:07<00:00,  5.42batch/s]
+
+ 	 - Train loss: 0.568651
+	 - Validation Loss: 0.531797
+	 - Validation Accuracy: 0.753125
+	 - Validation F1: 0.467552
+	 - Validation Recall: 0.468988
+	 - Validation Precision: 0.511607 
+
+	 * Model @ epoch 1 saved to model_saves/target-iSarcasm_inter-SARC_03/E01_A0.75_F0.47
+	 * Model checkpoint saved to model_saves/target-iSarcasm_inter-SARC_03/E01_A0.75_F0.47/checkpoint.pt
+
+Epoch 2: 100%|██████████| 267/267 [01:55<00:00,  2.31batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  6.85batch/s]
+
+ 	 - Train loss: 0.291537
+	 - Validation Loss: 0.622932
+	 - Validation Accuracy: 0.787500
+	 - Validation F1: 0.481081
+	 - Validation Recall: 0.489226
+	 - Validation Precision: 0.549107 
+
+	 * Model @ epoch 2 saved to model_saves/target-iSarcasm_inter-SARC_03/E02_A0.79_F0.48
+	 * Model checkpoint saved to model_saves/target-iSarcasm_inter-SARC_03/E02_A0.79_F0.48/checkpoint.pt
+
+Epoch 3: 100%|██████████| 267/267 [01:52<00:00,  2.37batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  6.92batch/s]
+
+ 	 - Train loss: 0.119015
+	 - Validation Loss: 0.780280
+	 - Validation Accuracy: 0.753125
+	 - Validation F1: 0.480263
+	 - Validation Recall: 0.480208
+	 - Validation Precision: 0.526667 
+
+	 * Model @ epoch 3 saved to model_saves/target-iSarcasm_inter-SARC_03/E03_A0.75_F0.48
+	 * Model checkpoint saved to model_saves/target-iSarcasm_inter-SARC_03/E03_A0.75_F0.48/checkpoint.pt
+
+Epoch 4: 100%|██████████| 267/267 [01:54<00:00,  2.33batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.37batch/s]
+
+ 	 - Train loss: 0.081427
+	 - Validation Loss: 0.934610
+	 - Validation Accuracy: 0.795312
+	 - Validation F1: 0.396510
+	 - Validation Recall: 0.325238
+	 - Validation Precision: 0.581667 
+
+	 * Model @ epoch 4 saved to model_saves/target-iSarcasm_inter-SARC_03/E04_A0.8_F0.4
+	 * Model checkpoint saved to model_saves/target-iSarcasm_inter-SARC_03/E04_A0.8_F0.4/checkpoint.pt
+
+Epoch 5: 100%|██████████| 267/267 [01:53<00:00,  2.34batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.13batch/s]
+
+ 	 - Train loss: 0.047134
+	 - Validation Loss: 1.104553
+	 - Validation Accuracy: 0.754687
+	 - Validation F1: 0.502064
+	 - Validation Recall: 0.547976
+	 - Validation Precision: 0.506310 
+
+	 * Model @ epoch 5 saved to model_saves/target-iSarcasm_inter-SARC_03/E05_A0.75_F0.5
+	 * Model checkpoint saved to model_saves/target-iSarcasm_inter-SARC_03/E05_A0.75_F0.5/checkpoint.pt
+
+Epoch 6: 100%|██████████| 267/267 [01:52<00:00,  2.38batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  6.98batch/s]
+
+ 	 - Train loss: 0.033950
+	 - Validation Loss: 1.085479
+	 - Validation Accuracy: 0.764062
+	 - Validation F1: 0.488736
+	 - Validation Recall: 0.498393
+	 - Validation Precision: 0.547440 
+
+	 * Model @ epoch 6 saved to model_saves/target-iSarcasm_inter-SARC_03/E06_A0.76_F0.49
+	 * Model checkpoint saved to model_saves/target-iSarcasm_inter-SARC_03/E06_A0.76_F0.49/checkpoint.pt
+
+Epoch 7: 100%|██████████| 267/267 [01:52<00:00,  2.36batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  6.88batch/s]
+
+ 	 - Train loss: 0.029405
+	 - Validation Loss: 1.096191
+	 - Validation Accuracy: 0.775000
+	 - Validation F1: 0.502220
+	 - Validation Recall: 0.486190
+	 - Validation Precision: 0.596429 
+
+	 * Model @ epoch 7 saved to model_saves/target-iSarcasm_inter-SARC_03/E07_A0.78_F0.5
+	 * Model checkpoint saved to model_saves/target-iSarcasm_inter-SARC_03/E07_A0.78_F0.5/checkpoint.pt
+
+Epoch 8: 100%|██████████| 267/267 [01:52<00:00,  2.38batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.01batch/s]
+
+ 	 - Train loss: 0.026162
+	 - Validation Loss: 1.315474
+	 - Validation Accuracy: 0.775000
+	 - Validation F1: 0.377763
+	 - Validation Recall: 0.325357
+	 - Validation Precision: 0.572917 
+
+	 * Model @ epoch 8 saved to model_saves/target-iSarcasm_inter-SARC_03/E08_A0.78_F0.38
+	 * Model checkpoint saved to model_saves/target-iSarcasm_inter-SARC_03/E08_A0.78_F0.38/checkpoint.pt
+
+Epoch 9: 100%|██████████| 267/267 [01:52<00:00,  2.37batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:06<00:00,  6.65batch/s]
+
+ 	 - Train loss: 0.026003
+	 - Validation Loss: 1.117422
+	 - Validation Accuracy: 0.776563
+	 - Validation F1: 0.464716
+	 - Validation Recall: 0.466042
+	 - Validation Precision: 0.543631 
+
+	 * Model @ epoch 9 saved to model_saves/target-iSarcasm_inter-SARC_03/E09_A0.78_F0.46
+	 * Model checkpoint saved to model_saves/target-iSarcasm_inter-SARC_03/E09_A0.78_F0.46/checkpoint.pt
+
+Epoch 10: 100%|██████████| 267/267 [01:51<00:00,  2.38batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.03batch/s]
+
+ 	 - Train loss: 0.021753
+	 - Validation Loss: 1.330137
+	 - Validation Accuracy: 0.751563
+	 - Validation F1: 0.405642
+	 - Validation Recall: 0.390327
+	 - Validation Precision: 0.500357 
+
+	 * Model @ epoch 10 saved to model_saves/target-iSarcasm_inter-SARC_03/E10_A0.75_F0.41
+	 * Model checkpoint saved to model_saves/target-iSarcasm_inter-SARC_03/E10_A0.75_F0.41/checkpoint.pt
+

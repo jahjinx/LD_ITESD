@@ -1,0 +1,11 @@
+This document details the reasoning behind particular hyperparameter choices.
+
+# --------- Training Parameters --------- 
+batch_size: float          = 16 # Recommended batch size: {16, 32}. See: https://arxiv.org/pdf/1907.11692.pdf
+learning_rate: float       = 1e-05 # Recommended Learning Rates {1e−5, 2e−5, 3e−5}. See: https://arxiv.org/pdf/1907.11692.pdf
+weight_decay: float        = 0 # RoBERTa Paper does not mention hyperparameter search for weight decay
+epochs: float              = 10 # Recommended number of epochs: 10. See: https://arxiv.org/pdf/1907.11692.pdf
+val_loss_fn                = nn.CrossEntropyLoss() # loss function for validation loop
+
+# --------- Tokenizer Parameters --------- 
+max_length: float          = 256 # length of tokenized phrases allowed, 512 max for RoBERTa

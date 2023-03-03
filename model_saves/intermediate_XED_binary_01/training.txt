@@ -1,0 +1,130 @@
+Epoch 1: 100%|██████████| 594/594 [02:33<00:00,  3.87batch/s]
+	 Validation 74: 100%|██████████| 75/75 [00:04<00:00, 17.48batch/s]
+
+ 	 - Train loss: 0.477366
+	 - Validation Loss: 0.393950
+	 - Validation Accuracy: 0.822500
+	 - Validation F1: 0.823453
+	 - Validation Recall: 0.845365
+	 - Validation Precision: 0.823157 
+
+	 * Model @ epoch 1 saved to model_saves/intermediate_XED_binary_01/E01_A0.82_F0.82
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 1
+
+Epoch 2: 100%|██████████| 594/594 [02:25<00:00,  4.09batch/s]
+	 Validation 74: 100%|██████████| 75/75 [00:04<00:00, 18.00batch/s]
+
+ 	 - Train loss: 0.353080
+	 - Validation Loss: 0.395879
+	 - Validation Accuracy: 0.839167
+	 - Validation F1: 0.833224
+	 - Validation Recall: 0.856285
+	 - Validation Precision: 0.831497 
+
+	 * Model @ epoch 2 saved to model_saves/intermediate_XED_binary_01/E02_A0.84_F0.83
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 2
+
+Epoch 3: 100%|██████████| 594/594 [02:24<00:00,  4.11batch/s]
+	 Validation 74: 100%|██████████| 75/75 [00:04<00:00, 17.42batch/s]
+
+ 	 - Train loss: 0.276437
+	 - Validation Loss: 0.439676
+	 - Validation Accuracy: 0.836667
+	 - Validation F1: 0.829306
+	 - Validation Recall: 0.859239
+	 - Validation Precision: 0.815963 
+
+	 * Model @ epoch 3 saved to model_saves/intermediate_XED_binary_01/E03_A0.84_F0.83
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 3
+
+Epoch 4: 100%|██████████| 594/594 [02:28<00:00,  4.00batch/s]
+	 Validation 74: 100%|██████████| 75/75 [00:04<00:00, 16.62batch/s]
+
+ 	 - Train loss: 0.209946
+	 - Validation Loss: 0.458529
+	 - Validation Accuracy: 0.828333
+	 - Validation F1: 0.824489
+	 - Validation Recall: 0.844218
+	 - Validation Precision: 0.819757 
+
+	 * Model @ epoch 4 saved to model_saves/intermediate_XED_binary_01/E04_A0.83_F0.82
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 4
+
+Epoch 5: 100%|██████████| 594/594 [02:28<00:00,  4.01batch/s]
+	 Validation 74: 100%|██████████| 75/75 [00:04<00:00, 15.24batch/s]
+
+ 	 - Train loss: 0.145350
+	 - Validation Loss: 0.579015
+	 - Validation Accuracy: 0.830000
+	 - Validation F1: 0.829395
+	 - Validation Recall: 0.879975
+	 - Validation Precision: 0.804455 
+
+	 * Model @ epoch 5 saved to model_saves/intermediate_XED_binary_01/E05_A0.83_F0.83
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 5
+
+Epoch 6: 100%|██████████| 594/594 [02:25<00:00,  4.08batch/s]
+	 Validation 74: 100%|██████████| 75/75 [00:04<00:00, 17.09batch/s]
+
+ 	 - Train loss: 0.110376
+	 - Validation Loss: 0.603527
+	 - Validation Accuracy: 0.814167
+	 - Validation F1: 0.806402
+	 - Validation Recall: 0.818323
+	 - Validation Precision: 0.816060 
+
+	 * Model @ epoch 6 saved to model_saves/intermediate_XED_binary_01/E06_A0.81_F0.81
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 6
+
+Epoch 7: 100%|██████████| 594/594 [02:26<00:00,  4.05batch/s]
+	 Validation 74: 100%|██████████| 75/75 [00:04<00:00, 17.28batch/s]
+
+ 	 - Train loss: 0.093452
+	 - Validation Loss: 0.613939
+	 - Validation Accuracy: 0.824167
+	 - Validation F1: 0.824747
+	 - Validation Recall: 0.864358
+	 - Validation Precision: 0.804988 
+
+	 * Model @ epoch 7 saved to model_saves/intermediate_XED_binary_01/E07_A0.82_F0.82
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 7
+
+Epoch 8: 100%|██████████| 594/594 [02:23<00:00,  4.13batch/s]
+	 Validation 74: 100%|██████████| 75/75 [00:04<00:00, 16.85batch/s]
+
+ 	 - Train loss: 0.067309
+	 - Validation Loss: 0.743358
+	 - Validation Accuracy: 0.832500
+	 - Validation F1: 0.827235
+	 - Validation Recall: 0.853088
+	 - Validation Precision: 0.826482 
+
+	 * Model @ epoch 8 saved to model_saves/intermediate_XED_binary_01/E08_A0.83_F0.83
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 8
+
+Epoch 9: 100%|██████████| 594/594 [02:29<00:00,  3.96batch/s]
+	 Validation 74: 100%|██████████| 75/75 [00:04<00:00, 17.94batch/s]
+
+ 	 - Train loss: 0.068078
+	 - Validation Loss: 0.797429
+	 - Validation Accuracy: 0.822500
+	 - Validation F1: 0.814594
+	 - Validation Recall: 0.829926
+	 - Validation Precision: 0.818997 
+
+	 * Model @ epoch 9 saved to model_saves/intermediate_XED_binary_01/E09_A0.82_F0.81
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 9
+
+Epoch 10: 100%|██████████| 594/594 [02:24<00:00,  4.11batch/s]
+	 Validation 74: 100%|██████████| 75/75 [00:04<00:00, 16.97batch/s]
+
+ 	 - Train loss: 0.054341
+	 - Validation Loss: 0.779495
+	 - Validation Accuracy: 0.827500
+	 - Validation F1: 0.823613
+	 - Validation Recall: 0.840056
+	 - Validation Precision: 0.823402 
+
+	 * Model @ epoch 10 saved to model_saves/intermediate_XED_binary_01/E10_A0.83_F0.82
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 10
+

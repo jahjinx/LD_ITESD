@@ -1,0 +1,130 @@
+Epoch 1: 100%|██████████| 267/267 [02:06<00:00,  2.12batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:07<00:00,  5.41batch/s]
+
+ 	 - Train loss: 0.605845
+	 - Validation Loss: 0.545372
+	 - Validation Accuracy: 0.715625
+	 - Validation F1: 0.460915
+	 - Validation Recall: 0.489048
+	 - Validation Precision: 0.473631 
+
+	 * Model @ epoch 1 saved to model_saves/target-iSarcasm_inter-XED-fine_03/E01_A0.72_F0.46
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 1
+
+Epoch 2: 100%|██████████| 267/267 [01:52<00:00,  2.37batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.09batch/s]
+
+ 	 - Train loss: 0.343389
+	 - Validation Loss: 0.606356
+	 - Validation Accuracy: 0.748437
+	 - Validation F1: 0.486132
+	 - Validation Recall: 0.531964
+	 - Validation Precision: 0.481399 
+
+	 * Model @ epoch 2 saved to model_saves/target-iSarcasm_inter-XED-fine_03/E02_A0.75_F0.49
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 2
+
+Epoch 3: 100%|██████████| 267/267 [01:48<00:00,  2.45batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  6.99batch/s]
+
+ 	 - Train loss: 0.138874
+	 - Validation Loss: 0.815445
+	 - Validation Accuracy: 0.779687
+	 - Validation F1: 0.388889
+	 - Validation Recall: 0.321667
+	 - Validation Precision: 0.587917 
+
+	 * Model @ epoch 3 saved to model_saves/target-iSarcasm_inter-XED-fine_03/E03_A0.78_F0.39
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 3
+
+Epoch 4: 100%|██████████| 267/267 [01:51<00:00,  2.39batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.40batch/s]
+
+ 	 - Train loss: 0.082376
+	 - Validation Loss: 0.900640
+	 - Validation Accuracy: 0.771875
+	 - Validation F1: 0.429429
+	 - Validation Recall: 0.387857
+	 - Validation Precision: 0.552976 
+
+	 * Model @ epoch 4 saved to model_saves/target-iSarcasm_inter-XED-fine_03/E04_A0.77_F0.43
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 4
+
+Epoch 5: 100%|██████████| 267/267 [01:50<00:00,  2.41batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.23batch/s]
+
+ 	 - Train loss: 0.055801
+	 - Validation Loss: 1.033801
+	 - Validation Accuracy: 0.734375
+	 - Validation F1: 0.503187
+	 - Validation Recall: 0.594881
+	 - Validation Precision: 0.468631 
+
+	 * Model @ epoch 5 saved to model_saves/target-iSarcasm_inter-XED-fine_03/E05_A0.73_F0.5
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 5
+
+Epoch 6: 100%|██████████| 267/267 [01:50<00:00,  2.42batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  6.78batch/s]
+
+ 	 - Train loss: 0.038401
+	 - Validation Loss: 1.118206
+	 - Validation Accuracy: 0.775000
+	 - Validation F1: 0.330478
+	 - Validation Recall: 0.267768
+	 - Validation Precision: 0.542262 
+
+	 * Model @ epoch 6 saved to model_saves/target-iSarcasm_inter-XED-fine_03/E06_A0.78_F0.33
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 6
+
+Epoch 7: 100%|██████████| 267/267 [01:49<00:00,  2.44batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  6.90batch/s]
+
+ 	 - Train loss: 0.028292
+	 - Validation Loss: 1.111231
+	 - Validation Accuracy: 0.762500
+	 - Validation F1: 0.425581
+	 - Validation Recall: 0.381548
+	 - Validation Precision: 0.551548 
+
+	 * Model @ epoch 7 saved to model_saves/target-iSarcasm_inter-XED-fine_03/E07_A0.76_F0.43
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 7
+
+Epoch 8: 100%|██████████| 267/267 [01:50<00:00,  2.42batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  7.11batch/s]
+
+ 	 - Train loss: 0.017322
+	 - Validation Loss: 1.274065
+	 - Validation Accuracy: 0.775000
+	 - Validation F1: 0.357130
+	 - Validation Recall: 0.299286
+	 - Validation Precision: 0.492083 
+
+	 * Model @ epoch 8 saved to model_saves/target-iSarcasm_inter-XED-fine_03/E08_A0.78_F0.36
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 8
+
+Epoch 9: 100%|██████████| 267/267 [01:49<00:00,  2.44batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  6.87batch/s]
+
+ 	 - Train loss: 0.015838
+	 - Validation Loss: 1.200053
+	 - Validation Accuracy: 0.781250
+	 - Validation F1: 0.437828
+	 - Validation Recall: 0.391667
+	 - Validation Precision: 0.565714 
+
+	 * Model @ epoch 9 saved to model_saves/target-iSarcasm_inter-XED-fine_03/E09_A0.78_F0.44
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 9
+
+Epoch 10: 100%|██████████| 267/267 [01:49<00:00,  2.43batch/s]
+	 Validation 39: 100%|██████████| 40/40 [00:05<00:00,  6.91batch/s]
+
+ 	 - Train loss: 0.035494
+	 - Validation Loss: 1.220024
+	 - Validation Accuracy: 0.781250
+	 - Validation F1: 0.420777
+	 - Validation Recall: 0.368095
+	 - Validation Precision: 0.573750 
+
+	 * Model @ epoch 10 saved to model_saves/target-iSarcasm_inter-XED-fine_03/E10_A0.78_F0.42
+	 ! Checkpoint Not Saved, Save Frequency: None, Epoch 10
+
