@@ -12,5 +12,5 @@
 /model_saves/*/*
 
 # Includelist
-!0_dataset_splits.txt
+!dataset_splits.txt
 !training.txt
