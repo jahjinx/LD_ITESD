@@ -1,0 +1,54 @@
+These are splits of total dataset rather than validation being an x% of training data
+
+Note: it is difficult to get perfect splits when balancing train sets, but approx
+will work fine.
+
+✅ XED_fine
+	Total Samples: 11,896
+	Train (80%): 9,496
+	Val (~10%): 1,200
+	Test (~10%): 1,200
+
+✅ XED_coarse
+	Total Samples: 11,896
+	Train (80%): 9,496
+	Val (~10%): 1,200
+	Test (~10%): 1,200
+
+✅ SARC
+	Total Samples: 100,000
+	Train (80%): 80,000
+	Val (10%): 10,000
+	Test (10%): 10,000
+
+✅ IMDB
+	Total Samples: 50,000
+	Train (80%): 40,000
+	Val (10%): 5,000
+	Test (10%): 5,000
+
+✅ HellaSwag - Existing Train/Validation Split, no Test Split *
+	Total Samples: 49,636
+	Train (~70%): 34,600
+	Val (20%): 10,042
+	Test (~10%): 4,994
+	** undersample adjustment: -311
+
+✅ CosmosQA - Existing Train/Validation Split, no Test Split *
+	Total Samples: 28,082
+	Train (80%): 22,272
+	Val (~10%): 2,985
+	Test (~10%): 2,825
+	** undersample adjustment: -165
+
+✅ iSarcasm - Existing Train/Test Split, no Validation Split *
+		3,467 original training samples 
+			-> 628 (~10% of final total samples) observations removed for validation
+			-> Remaining 2,839 observations randomly oversampled to 4,266 observations
+	Total Samples: 6,294
+	Train (70%): 4,266
+	Val (10%): 628
+	Test (~20%): 1,400
+
+* datasets that include their own splits, which we do not alter
+** As we undersampled these datasets in order to balance their training splits, there is leftover data. However, we do not add this data to the validation set, for example, as that may alter the distribution. 

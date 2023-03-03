@@ -3,6 +3,12 @@
 /.ipynb_checkpoints
 /doc_documentation
 /doc_research_papers
-/model_saves
-/data
 /.vscode
+
+# include these top-level directores but only specific content
+/data/*
+/model_saves/*/*
+
+# Includelist
+!0_dataset_splits.txt
+!training.txt

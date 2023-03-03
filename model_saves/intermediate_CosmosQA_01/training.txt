@@ -1,0 +1,129 @@
+Epoch 1: 100%|██████████| 1392/1392 [1:30:00<00:00,  3.88s/batch]
+	 Validation 186: 100%|██████████| 187/187 [03:16<00:00,  1.05s/batch]
+
+ 	 - Train loss: 1.014240
+	 - Validation Loss: 0.935583
+	 - Validation Accuracy: 0.640523
+	 - Validation F1: 0.640523
+	 - Validation Recall: 0.640523
+	 - Validation Precision: 0.640523 
+
+	 * Model @ epoch 1 saved to model_saves/intermediate_CosmosQA_01/E01_A0.64_F0.64
+	 * Model checkpoint saved to model_saves/intermediate_CosmosQA_01/E01_A0.64_F0.64/checkpoint.pt
+
+Epoch 2: 100%|██████████| 1392/1392 [1:15:49<00:00,  3.27s/batch]
+	 Validation 186: 100%|██████████| 187/187 [03:14<00:00,  1.04s/batch]
+
+ 	 - Train loss: 0.683692
+	 - Validation Loss: 0.891763
+	 - Validation Accuracy: 0.664401
+	 - Validation F1: 0.664401
+	 - Validation Recall: 0.664401
+	 - Validation Precision: 0.664401 
+
+	 * Model @ epoch 2 saved to model_saves/intermediate_CosmosQA_01/E02_A0.66_F0.66
+	 * Model checkpoint saved to model_saves/intermediate_CosmosQA_01/E02_A0.66_F0.66/checkpoint.pt
+
+Epoch 3: 100%|██████████| 1392/1392 [1:13:02<00:00,  3.15s/batch]
+	 Validation 186: 100%|██████████| 187/187 [03:14<00:00,  1.04s/batch]
+
+ 	 - Train loss: 0.465235
+	 - Validation Loss: 0.971043
+	 - Validation Accuracy: 0.689728
+	 - Validation F1: 0.689728
+	 - Validation Recall: 0.689728
+	 - Validation Precision: 0.689728 
+
+	 * Model @ epoch 3 saved to model_saves/intermediate_CosmosQA_01/E03_A0.69_F0.69
+	 * Model checkpoint saved to model_saves/intermediate_CosmosQA_01/E03_A0.69_F0.69/checkpoint.pt
+
+Epoch 4: 100%|██████████| 1392/1392 [1:13:26<00:00,  3.17s/batch]
+	 Validation 186: 100%|██████████| 187/187 [03:12<00:00,  1.03s/batch]
+
+ 	 - Train loss: 0.297749
+	 - Validation Loss: 1.027505
+	 - Validation Accuracy: 0.699755
+	 - Validation F1: 0.699755
+	 - Validation Recall: 0.699755
+	 - Validation Precision: 0.699755 
+
+	 * Model @ epoch 4 saved to model_saves/intermediate_CosmosQA_01/E04_A0.7_F0.7
+	 * Model checkpoint saved to model_saves/intermediate_CosmosQA_01/E04_A0.7_F0.7/checkpoint.pt
+
+Epoch 5: 100%|██████████| 1392/1392 [1:16:08<00:00,  3.28s/batch]
+Validation 186: 100%|██████████| 187/187 [03:14<00:00,  1.04s/batch]
+
+ 	 - Train loss: 0.194134
+	 - Validation Loss: 1.226925
+	 - Validation Accuracy: 0.670752
+	 - Validation F1: 0.670752
+	 - Validation Recall: 0.670752
+	 - Validation Precision: 0.670752 
+
+	 * Model @ epoch 5 saved to model_saves/intermediate_CosmosQA_01/E05_A0.67_F0.67
+	 * Model checkpoint saved to model_saves/intermediate_CosmosQA_01/E05_A0.67_F0.67/checkpoint.pt
+
+Epoch 6: 100%|██████████| 1392/1392 [1:12:39<00:00,  3.13s/batch]
+	 Validation 186: 100%|██████████| 187/187 [03:14<00:00,  1.04s/batch]
+
+ 	 - Train loss: 0.133078
+	 - Validation Loss: 1.368796
+	 - Validation Accuracy: 0.704174
+	 - Validation F1: 0.704174
+	 - Validation Recall: 0.704174
+	 - Validation Precision: 0.704174 
+
+	 * Model @ epoch 6 saved to model_saves/intermediate_CosmosQA_01/E06_A0.7_F0.7
+	 * Model checkpoint saved to model_saves/intermediate_CosmosQA_01/E06_A0.7_F0.7/checkpoint.pt
+
+Epoch 7: 100%|██████████| 1392/1392 [1:12:40<00:00,  3.13s/batch]
+	 Validation 186: 100%|██████████| 187/187 [03:15<00:00,  1.04s/batch]
+
+ 	 - Train loss: 0.103807
+	 - Validation Loss: 1.474133
+	 - Validation Accuracy: 0.684715
+	 - Validation F1: 0.684715
+	 - Validation Recall: 0.684715
+	 - Validation Precision: 0.684715 
+
+	 * Model @ epoch 7 saved to model_saves/intermediate_CosmosQA_01/E07_A0.68_F0.68
+	 * Model checkpoint saved to model_saves/intermediate_CosmosQA_01/E07_A0.68_F0.68/checkpoint.pt
+
+Epoch 8: 100%|██████████| 1392/1392 [1:12:50<00:00,  3.14s/batch]
+	 Validation 186: 100%|██████████| 187/187 [03:15<00:00,  1.04s/batch]
+
+ 	 - Train loss: 0.083877
+	 - Validation Loss: 1.572271
+	 - Validation Accuracy: 0.687797
+	 - Validation F1: 0.687797
+	 - Validation Recall: 0.687797
+	 - Validation Precision: 0.687797 
+
+	 * Model @ epoch 8 saved to model_saves/intermediate_CosmosQA_01/E08_A0.69_F0.69
+	 * Model checkpoint saved to model_saves/intermediate_CosmosQA_01/E08_A0.69_F0.69/checkpoint.pt
+
+Epoch 9: 100%|██████████| 1392/1392 [1:13:12<00:00,  3.16s/batch]
+	 Validation 186: 100%|██████████| 187/187 [03:10<00:00,  1.02s/batch]
+
+ 	 - Train loss: 0.074522
+	 - Validation Loss: 1.628585
+	 - Validation Accuracy: 0.688540
+	 - Validation F1: 0.688540
+	 - Validation Recall: 0.688540
+	 - Validation Precision: 0.688540 
+
+	 * Model @ epoch 9 saved to model_saves/intermediate_CosmosQA_01/E09_A0.69_F0.69
+	 * Model checkpoint saved to model_saves/intermediate_CosmosQA_01/E09_A0.69_F0.69/checkpoint.pt
+
+Epoch 10: 100%|██████████| 1392/1392 [1:10:46<00:00,  3.05s/batch]
+	 Validation 186: 100%|██████████| 187/187 [03:10<00:00,  1.02s/batch]
+
+ 	 - Train loss: 0.060033
+	 - Validation Loss: 1.883763
+	 - Validation Accuracy: 0.680890
+	 - Validation F1: 0.680890
+	 - Validation Recall: 0.680890
+	 - Validation Precision: 0.680890 
+
+	 * Model @ epoch 10 saved to model_saves/intermediate_CosmosQA_01/E10_A0.68_F0.68
+	 * Model checkpoint saved to model_saves/intermediate_CosmosQA_01/E10_A0.68_F0.68/checkpoint.pt
