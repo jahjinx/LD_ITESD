@@ -225,7 +225,7 @@ class Trainer:
             encoded_datasets = self.datasets.map(mc_preprocessing, 
                                                  batched=True, 
                                                  fn_kwargs={"tokenizer": self.tokenizer,
-                                                            'eval': False}) #TODO Paramaterieze eval
+                                                            'eval': False}) #TODO argparse eval?
             
         elif self.args.data_type == "sequence_classification":
             logging.info('Preprocessing for sequence_classification...')

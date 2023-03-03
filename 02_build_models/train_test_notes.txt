@@ -1,39 +1,97 @@
-Key:
+🔑 Key:
     ✅ - Training Complete
+    🤖 - RoBERTa_base
+    🥈 - Intermediate Task 
+    🎯 - Target Task
 
-✅ iSarcasm_control_01, 02 & 03:
-    Training Notes:
-        Trained On: data/target_semEval2022_en/iSarcasmEval-main/train/train.en.prepped-oversampled.csv
-            This training dataset is an oversampled version of data/target_semEval2022_en/iSarcasmEval-main/train/train.En.csv
-            It was obtained from SemEval2022.
-            The Train/Test Split for Training & Validation is 80%, 20%
-        Testing Notes:
-            Tested On: data/target_semEval2022_en/iSarcasmEval-main/test/task_A_En_test.csv
+All Models were trained on balanced training splits of their source datasets
+as noted in data/0_dataset_splits.txt
 
-✅ intermediate_XED_binary_01
-    Training Notes:
-        Trained On: data/inter_XED/binary/xed_binary_train.csv
-            This training data is modified from the XED dataset to map negative emotions to 0 and positive emotions to 1.
-            Some values are removed in cleaning, but otherwise the entire dataset is used.
-    Testing Notes:
-        Tested On: data/inter_XED/binary/xed_binary_test.csv
-            This testing data is a subset of the training data as no dedicated testing set existed.
+The validation splits are faithful to the source dataset's original distribution.
 
-✅ intermediate_XED_fine_01
-    Training Notes:
-        Trained On: data/inter_XED/fine_grain/xed_fine-grain_train.csv
-            This training data is a cleaned and train/test split subset of the XED dataset.
-            Some values are removed in cleaning, but otherwise the entire dataset is used.
-    Testing Notes:
-        Tested On: data/inter_XED/fine_grain/xed_fine-grain_test.csv
-            This testing data is a subset of the training data as no dedicated testing set existed.
+Control Models 🤖 -> 🎯
+    The control models are created by training Roberta_base on our target task.
+    This is done three separate times to account for stochastic variance. 
 
-✅ intermediate_SARC_01
-    Training Notes:
-        Trained On: data/SARC/SARC_preped_sampled_train.csv
-            This training dataset originally had over 1 million samples (data/SARC/train-balanced-sarcasm.csv). 
-            This would take too long to train for our purposes, so we cleaned the data and extracted 100,000 
-            observations for training and 20,000 for testing.
-    Testing Notes:
-        Tested On: data/SARC/SARC_preped_sampled_test.csv
-            The testing data is a unique subset of the cleaned training data (data/SARC/train-balanced-sarcasm.csv).
+    ✅ iSarcasm_control_01, 02 & 03:
+        Task Dataset: data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf
+        iSarcasm_control models are fine-tuned only on the SemEval 2022 iSarcasmEval
+        task, specifically SubTask A: Given a text, determine whether it is sarcastic 
+        or non-sarcastic.
+        Max-Length Train Token ID Sequence: 124
+
+Intermediate Models 🤖 -> 🥈
+    The intermediate models are stepping stones towards our final, intermediately fine-tuned 
+    models. They are created by training Roberta_base on our individual intermediate tasks.
+
+    ✅ intermediate_XED_binary_01:
+        Task Dataset: data/inter_XED/itesd_xed_binary_balanced.hf  
+        The intermediate_XED_binary_01 model is fine-tuned on the XED coarse-grain 
+        dataset as constructed in 01_notebooks_EDA/eda_XED.ipynb.
+        Max-Length Train Token ID Sequence: 62
+
+    ✅ intermediate_XED_fine_01:
+        Task Dataset: data/inter_XED/itesd_xed_fine_balanced.hf
+        The intermediate_XED_binary_01 model is fine-tuned on the XED dataset as 
+        explored and balanced in 01_notebooks_EDA/eda_XED.ipynb.
+        Max-Length Train Token ID Sequence: 62
+
+    ✅ intermediate_SARC_01:
+        Task Dataset: data/inter_SARC/itesd_sarc_balanced.hf
+        The intermediate_SARC_01 model is fine-tuned on a balanced subset of the SARC
+        dataset as explored and constructed in 01_notebooks_EDA/eda_SARC.ipynb.
+        Max-Length Train Token ID Sequence: 255
+
+    ✅ intermediate_IMDB_01:
+        Task Dataset: data/inter_IMDB_sentiment/itesd_imdb_balanced.hf
+        The intermediate_IMDB_01 model is fine-tuned on the IMDB dataset as explored
+        in 01_notebooks_EDA/eda_IMDB.ipynb.
+        Max-Length Train Token ID Sequence: >256
+
+    ✅ intermediate_HellaSwag_01:
+        Task Dataset: data/inter_HellaSwag/itesd_hellaswag_balanced.hf
+        The intermediate_HellaSwag_01 model is fine-tuned on a balanced subset of the
+        HellaSwag dataset as explored and constructed in 01_notebooks_EDA/eda_HellaSwag.ipynb.
+        Max-Length Train Token ID Sequence: 159
+
+    ✅ intermediate_CosmosQA_01:
+        Task Dataset: data/inter_cosmosqa/itesd_cosmosqa_balanced.hf
+        The intermediate_CosmosQA_01 model is fine-tuned on a balanced subset of the
+        CosmosQA task as explored and constructed in 01_notebooks_EDA/eda_CosmosQA.ipynb.
+        Max-Length Train Token ID Sequence: 212
+
+Intermediately Fine-Tuned Models 🤖 -> 🥈 -> 🎯
+    Intermediately fine-tuned models are created by first fine-tuning RoBERTa_base 
+    on an intermediate task, and then fine-tuning once again on our target task.
+    Each intermediate model is fine-tuned three separate times on the target task, 
+    creating three new models, to account for stochastic variance.
+
+    ✅ target-iSarcasm_inter-XED_binary_01, 02, 03:
+        Intermediate Task Dataset: data/inter_XED/itesd_xed_binary_balanced.hf
+        Target Task Dataset: data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf  
+        target-iSarcasm_inter-XED_binary
+
+    ✅ target-iSarcasm_inter-XED_fine_01, 02, 03:
+        Intermediate Task Dataset: data/inter_XED/itesd_xed_fine_balanced.hf
+        Target Task Dataset: data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf 
+        target-iSarcasm_inter-XED_fine
+
+    ✅ target-iSarcasm_inter-SARC_01, 02, 03:
+        Intermediate Task Dataset: data/inter_SARC/itesd_sarc_balanced.hf
+        Target Task Dataset: data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf
+        target-iSarcasm_inter-SARC
+
+    ✅ target-iSarcasm_inter-IMDB_01, 02, 03:
+        Intermediate Task Dataset: data/inter_IMDB_sentiment/itesd_imdb_balanced.hf
+        Target Task Dataset: data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf
+        target-iSarcasm_inter-IMDB
+
+    ✅ target-iSarcasm_inter-HellaSwag_01, 02, 03:
+        Intermediate Task Dataset: data/inter_HellaSwag/itesd_hellaswag_balanced.hf
+        Target Task Dataset: data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf
+        target-iSarcasm_inter-HellaSwag
+
+    ✅ target-iSarcasm_inter-CosmosQA_01, 02, 03:
+        Intermediate Task Dataset: data/inter_cosmosqa/itesd_cosmosqa_balanced.hf
+        Target Task Dataset: data/target_iSarcasmEval/itesd_iSarcasmEval_balanced.hf
+        target-iSarcasm_inter-CosmosQA
