@@ -358,7 +358,6 @@ def get_parser():
     return parser
 
 def train(args):
-    print("args.output_dir", args.output_dir)
     if not os.path.exists(args.output_dir):
         os.makedirs(args.output_dir)
         
