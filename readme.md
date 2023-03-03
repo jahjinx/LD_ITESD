@@ -1,4 +1,4 @@
-<h1 style="font-size:300%;">AI4EduRes'2023: <br />Fine-Tuning RoBERTa for Downstream Tasks</h1>
+<h1 style="font-size:300%;">Intermediate Task Ensembling for Sarcasm Detection</h1>
 
 - [This Repo](#this-repo)
 - [Setup](#setup)
