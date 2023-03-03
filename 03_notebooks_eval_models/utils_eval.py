@@ -16,7 +16,6 @@ import os
 import warnings
 import pandas as pd
 from tqdm import tqdm
-from datasets import disable_caching
 
 from transformers import RobertaTokenizer, RobertaForSequenceClassification, RobertaForMultipleChoice
 from sklearn.metrics import accuracy_score, f1_score
@@ -24,9 +23,6 @@ from sklearn.metrics import accuracy_score, f1_score
 ############## Settings ##############
 # suppress MPS CPU fallback warning
 warnings.filterwarnings(action='ignore', category=UserWarning)
-
-# clean slates
-disable_caching()
 
 ############## Classes/Functions ##############
 def parse_model_dir(top_level_dir):

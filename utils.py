@@ -12,10 +12,10 @@
 ############## Imports ##############
 import random
 import logging
+import platform
 import numpy as np
 
 import torch
-import platform
 from transformers import set_seed
 
 ############## Settings ##############
@@ -66,7 +66,8 @@ def preprocessing_dyna(input_text, tokenizer, max_length, eval=False):
 def mc_preprocessing(examples, tokenizer,max_length, eval=False):
     """
     This function determines the input data source (HellaSwag or CosmosQA), merges contexts/questions/answers where
-    appropriate, then encodes and tokenizes the data. It structures the output into a dictionary acceptable by the dataloaders.
+    appropriate, then encodes and tokenizes the data. It structures the output into a dictionary acceptable by the 
+    dataloaders.
     """
     # hellaswag uses ending0, ending1, ending2, ending3
     if 'ending0' in examples.keys():

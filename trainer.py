@@ -25,7 +25,6 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, RandomSampler
 
 from transformers import logging as tf_logging
-from transformers import RobertaTokenizer
 from transformers import RobertaTokenizer, RobertaForSequenceClassification, RobertaForMultipleChoice
 
 from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
@@ -60,13 +59,13 @@ class Trainer:
     def __init__(self,
                  args: argparse.Namespace):
         self.args = args   
-        self.param_log = self.log_params()  # log params to ensure consistency
+        self.param_log = self.log_params()
         self.datasets = load_from_disk(self.args.dataset_path)
         self.device = torch.device(self.args.device)
         self.model = self.configure_model() 
         self.optimizer = self.configure_optimizer()        
-        self.val_loss_fn=nn.CrossEntropyLoss()         
-        self.tokenizer=RobertaTokenizer.from_pretrained(self.args.model_path, use_fast=True) 
+        self.val_loss_fn = nn.CrossEntropyLoss()         
+        self.tokenizer = RobertaTokenizer.from_pretrained(self.args.model_path, use_fast=True) 
 
         
     def configure_optimizer(self):
@@ -84,7 +83,7 @@ class Trainer:
                                                              output_hidden_states = False, 
                                                              local_files_only=self.args.local_files,
                                                              # Ignore for fine-tuning Target from Intermediate with different sized num_labels
-                                                             ignore_mismatched_sizes=True,) 
+                                                             ignore_mismatched_sizes=True) 
     
         elif self.args.data_type == "sequence_classification":
             logging.info('Loading RobertaForSequenceClassification model...')
@@ -94,7 +93,7 @@ class Trainer:
                                                                      output_hidden_states = False,
                                                                      local_files_only=self.args.local_files,
                                                                      # Ignore for fine-tuning Target from Intermediate with different sized num_labels
-                                                                     ignore_mismatched_sizes=True,)
+                                                                     ignore_mismatched_sizes=True)
         model.to(self.device)
 
         return model
@@ -359,6 +358,10 @@ def get_parser():
     return parser
 
 def train(args):
+    print("args.output_dir", args.output_dir)
+    if not os.path.exists(args.output_dir):
+        os.makedirs(args.output_dir)
+        
     trainer = Trainer(args)
     trainer.fit()
     
